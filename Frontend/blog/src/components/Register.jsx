@@ -4,7 +4,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
 export default function Register() {
   const handleGoogleLogin = (response) => {
-    console.log(response);
+    console.log(response) ;
     // Handle the response here, e.g., send it to your backend for validation.
   };
 
