@@ -2,6 +2,7 @@
 import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 //firebase
+//google
 export default function Register() {
   const handleGoogleLogin = (response) => {
     console.log(response) ;
