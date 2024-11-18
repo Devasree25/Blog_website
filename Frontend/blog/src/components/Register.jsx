@@ -13,7 +13,7 @@ export default function Register() {
     <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
       <div
         style={{
-          minHeight: '100vh',
+          minHeight: '200vh',
           background: 'linear-gradient(to right, #4f46e5, #7c3aed)',
           display: 'flex',
           alignItems: 'center',
