@@ -1,15 +1,17 @@
 // Register.js
 import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-
+//firebase
+//google
 export default function Register() {
   const handleGoogleLogin = (response) => {
-    console.log(response);
-    // Handle the response here, e.g., send it to your backend for validation.
+    console.log(response) ;
+    // Handle the response here, e.g., send i t to your backend for validation.
+    //HANDLE
   };
 
   return (
-    <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+    <GoogleOAuthProvider clientId="Y bOUR_GOOGLE_CLIENT_ID">
       <div
         style={{
           minHeight: '100vh',
