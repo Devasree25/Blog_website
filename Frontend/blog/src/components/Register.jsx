@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../Firebase/Firebase';
 
@@ -29,6 +33,33 @@ const Register = () => {
       alert('Registration successful!');
     } catch (err) {
       console.error('Error:', err);
+      setError(err.message);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      console.log('Google user signed in:', user.uid);
+
+      // Save user data to Firestore (if it's the first sign-in)
+      await setDoc(
+        doc(db, 'users', user.uid),
+        {
+          name: user.displayName,
+          email: user.email,
+          createdAt: new Date(),
+        },
+        { merge: true } // Prevent overwriting if the document already exists
+      );
+
+      console.log('Google user saved to Firestore');
+      alert('Google Sign-In successful!');
+    } catch (err) {
+      console.error('Google Sign-In Error:', err);
       setError(err.message);
     }
   };
@@ -94,6 +125,13 @@ const Register = () => {
           </button>
         </div>
       </form>
+
+      <button
+        onClick={handleGoogleSignIn}
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Sign in with Google
+      </button>
     </div>
   );
 };
