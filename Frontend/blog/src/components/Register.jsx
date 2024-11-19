@@ -1,182 +1,98 @@
-// Register.js
-import React from 'react';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-//firebase
-//google
-export default function Register() {
-  const handleGoogleLogin = (response) => {
-    console.log(response) ;
-    // Handle the response here, e.g., send i t to your backend for validation.
-    //HANDLE
+// Register.jsx
+import React, { useState } from 'react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '././../Firebase/Firebase'; // Adjust path if needed
+
+const Register = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [error, setError] = useState('');
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Save additional user data to Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        name,
+        email,
+        createdAt: new Date(),
+      });
+
+      setError(''); // Clear error on success
+      alert('Registration successful!');
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
-    <GoogleOAuthProvider clientId="Y bOUR_GOOGLE_CLIENT_ID">
-      <div
-        style={{
-          minHeight: '100vh',
-          background: 'linear-gradient(to right, #4f46e5, #7c3aed)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <form
+        onSubmit={handleRegister}
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-96"
       >
-        <div
-          style={{
-            backgroundColor: 'white',
-            padding: '2rem',
-            borderRadius: '0.5rem',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-            maxWidth: '400px',
-            width: '100%',
-          }}
-        >
-          <h2
-            style={{
-              fontSize: '1.75rem',
-              fontWeight: 'bold',
-              textAlign: 'center',
-              color: '#333',
-              marginBottom: '1.5rem',
-            }}
+        <h2 className="text-2xl font-bold mb-6">Register</h2>
+
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             Register
-          </h2>
-          <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div>
-              <label
-                htmlFor="name"
-                style={{
-                  display: 'block',
-                  fontSize: '0.875rem',
-                  color: '#555',
-                  marginBottom: '0.25rem',
-                }}
-              >
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                style={{
-                  width: '100%',
-                  padding: '0.5rem',
-                  border: '1px solid #ccc',
-                  borderRadius: '0.375rem',
-                  fontSize: '1rem',
-                }}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                style={{
-                  display: 'block',
-                  fontSize: '0.875rem',
-                  color: '#555',
-                  marginBottom: '0.25rem',
-                }}
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                style={{
-                  width: '100%',
-                  padding: '0.5rem',
-                  border: '1px solid #ccc',
-                  borderRadius: '0.375rem',
-                  fontSize: '1rem',
-                }}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="password"
-                style={{
-                  display: 'block',
-                  fontSize: '0.875rem',
-                  color: '#555',
-                  marginBottom: '0.25rem',
-                }}
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                required
-                style={{
-                  width: '100%',
-                  padding: '0.5rem',
-                  border: '1px solid #ccc',
-                  borderRadius: '0.375rem',
-                  fontSize: '1rem',
-                }}
-              />
-            </div>
-            <button
-              type="submit"
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                backgroundColor: '#4f46e5',
-                color: 'white',
-                fontWeight: 'bold',
-                border: 'none',
-                borderRadius: '0.375rem',
-                cursor: 'pointer',
-                transition: 'background-color 0.2s',
-              }}
-              onMouseOver={(e) => (e.target.style.backgroundColor = '#3b30cc')}
-              onMouseOut={(e) => (e.target.style.backgroundColor = '#4f46e5')}
-            >
-              Sign Up
-            </button>
-          </form>
-          {/* Google Login Button */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginTop: '1rem',
-            }}
-          >
-            <GoogleLogin
-              onSuccess={handleGoogleLogin}
-              onError={(error) => console.error('Google login failed', error)}
-              useOneTap
-            />
-          </div>
-          <p
-            style={{
-              textAlign: 'center',
-              fontSize: '0.875rem',
-              color: '#666',
-              marginTop: '1rem',
-            }}
-          >
-            Already have an account?{' '}
-            <a
-              href="#"
-              style={{
-                color: '#4f46e5',
-                textDecoration: 'none',
-              }}
-              onMouseOver={(e) => (e.target.style.textDecoration = 'underline')}
-              onMouseOut={(e) => (e.target.style.textDecoration = 'none')}
-            >
-              Log in
-            </a>
-          </p>
+          </button>
         </div>
-      </div>
-    </GoogleOAuthProvider>
+      </form>
+    </div>
   );
-}
+};
+
+export default Register;
