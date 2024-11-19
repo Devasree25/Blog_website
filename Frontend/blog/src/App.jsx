@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import Register from './components/Register'; // Import the Register component
+import LandingPage from './components/Landingpage';
 // import Login from './components/Login';
 
 function App() {
@@ -9,8 +10,9 @@ function App() {
   return (
     <div className="App">
       {/* Display the Register component */}
-      <Register/>
+      {/* <Register/> */}
       {/* <Login/> */}
+      <LandingPage/>
     </div>
   );
 }
