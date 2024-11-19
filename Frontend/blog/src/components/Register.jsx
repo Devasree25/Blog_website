@@ -1,8 +1,7 @@
-// Register.jsx
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '././../Firebase/Firebase'; // Adjust path if needed
+import { auth, db } from '../Firebase/Firebase';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -16,6 +15,8 @@ const Register = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      console.log('User created:', user.uid);
+
       // Save additional user data to Firestore
       await setDoc(doc(db, 'users', user.uid), {
         name,
@@ -23,9 +24,11 @@ const Register = () => {
         createdAt: new Date(),
       });
 
+      console.log('User saved to Firestore');
       setError(''); // Clear error on success
       alert('Registration successful!');
     } catch (err) {
+      console.error('Error:', err);
       setError(err.message);
     }
   };
