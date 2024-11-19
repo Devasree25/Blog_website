@@ -1,7 +1,38 @@
-// Login.js
-import React from 'react';
+import React, { useState } from 'react';
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '../Firebase/Firebase'; // Ensure correct import path
 
 export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  // Email/Password Login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      setError('');
+      alert('Login successful!');
+    } catch (err) {
+      setError('Failed to log in: ' + err.message);
+    }
+  };
+
+  // Google Login
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log('Google user signed in:', user);
+      setError('');
+      alert('Google Login successful!');
+    } catch (err) {
+      setError('Google login failed: ' + err.message);
+    }
+  };
+
   return (
     <div
       style={{
@@ -33,7 +64,12 @@ export default function Login() {
         >
           Login
         </h2>
-        <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+
+        {error && (
+          <p style={{ color: 'red', textAlign: 'center', fontSize: '0.875rem' }}>{error}</p>
+        )}
+
+        <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} onSubmit={handleLogin}>
           <div>
             <label
               htmlFor="email"
@@ -50,6 +86,8 @@ export default function Login() {
               type="email"
               id="email"
               name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               style={{
                 width: '100%',
@@ -76,6 +114,8 @@ export default function Login() {
               type="password"
               id="password"
               name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
               style={{
                 width: '100%',
@@ -105,6 +145,27 @@ export default function Login() {
             Log In
           </button>
         </form>
+
+        <button
+          onClick={handleGoogleSignIn}
+          style={{
+            width: '100%',
+            padding: '0.75rem',
+            backgroundColor: '#4285F4',
+            color: 'white',
+            fontWeight: 'bold',
+            border: 'none',
+            borderRadius: '0.375rem',
+            cursor: 'pointer',
+            marginTop: '1rem',
+            transition: 'background-color 0.2s',
+          }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = '#3367D6')}
+          onMouseOut={(e) => (e.target.style.backgroundColor = '#4285F4')}
+        >
+          Sign in with Google
+        </button>
+
         <p
           style={{
             textAlign: 'center',
@@ -115,7 +176,7 @@ export default function Login() {
         >
           Don't have an account?{' '}
           <a
-            href="#"
+            href="/register" // Link to the Register page
             style={{
               color: '#FF7E5F',
               textDecoration: 'none',
