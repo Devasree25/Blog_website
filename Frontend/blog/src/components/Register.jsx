@@ -11,7 +11,7 @@ export default function Register() {
   };
 
   return (
-    <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+    <GoogleOAuthProvider clientId="Y bOUR_GOOGLE_CLIENT_ID">
       <div
         style={{
           minHeight: '100vh',
