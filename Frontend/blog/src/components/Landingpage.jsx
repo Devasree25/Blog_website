@@ -10,7 +10,7 @@ const LandingPage = () => {
           <ul className="flex space-x-6">
             <li>
               <a href="#" className="hover:underline">
-                Home
+                Register
               </a>
             </li>
             <li>
