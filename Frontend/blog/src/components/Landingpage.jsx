@@ -1,86 +1,110 @@
-import React from 'react';
+import React from "react";
 
 const LandingPage = () => {
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: '#f9fafb', padding: '20px', margin: 0 }}>
-      {/* Header Section */}
-      <header style={{
-        backgroundColor: '#1a202c', color: '#fff', padding: '60px 20px', textAlign: 'center', borderRadius: '8px',
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
-      }}>
-        <h1 style={{ fontSize: '3em', fontWeight: 'bold' }}>Welcome to My Blog App</h1>
-        <p style={{ fontSize: '1.3em', marginTop: '10px', fontWeight: 'lighter' }}>Explore the latest posts and insights from the world of technology.</p>
+    <div className="font-sans bg-gray-100">
+      {/* Navbar */}
+      <nav className="bg-gray-900 text-white py-4 px-8 shadow-lg">
+        <div className="container mx-auto flex justify-between items-center">
+          <h1 className="text-2xl font-bold">My Blog App</h1>
+          <ul className="flex space-x-6">
+            <li>
+              <a href="#" className="hover:underline">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                Blog
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                Contact
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <header className="flex flex-col-reverse lg:flex-row items-center justify-between bg-gray-900 text-white py-20 px-8 lg:px-20 rounded-lg shadow-lg">
+        {/* Left Section */}
+        <div className="lg:w-1/2 text-center lg:text-left">
+          <h1 className="text-4xl lg:text-5xl font-bold mb-6">
+            Bold Ideas for Tech Enthusiasts
+          </h1>
+          <p className="text-lg font-light mb-6">
+            Explore the latest trends, guides, and insights in the world of technology. Dive into articles crafted for learners and professionals alike.
+          </p>
+          <button className="py-3 px-6 bg-gray-100 text-gray-900 font-bold rounded-lg hover:bg-gray-200 transition duration-300">
+            Get Started
+          </button>
+        </div>
+        {/* Right Section */}
+        <div className="lg:w-1/2">
+          <img
+            src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Fpremium-photo%2Ffront-view-handsome-focused-young-man-reading-business-paper-book-sitting-desk-with-laptop-home-office_30452503.htm&psig=AOvVaw2m8nypKkNq7sFa47JjpmLp&ust=1732162705102000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOikgIiH6okDFQAAAAAdAAAAABAE"
+            alt="Hero Section Image"
+            className="rounded-lg shadow-lg"
+          />
+        </div>
       </header>
 
-      {/* Main Content Section */}
-      <main style={{ display: 'flex', justifyContent: 'space-between', marginTop: '50px', gap: '30px', flexWrap: 'wrap' }}>
-        {/* Blog Post 1 */}
-        <div style={{
-          width: '30%', backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-          overflow: 'hidden', transition: 'transform 0.3s ease-in-out', cursor: 'pointer'
-        }}>
-          <img 
-            src="https://via.placeholder.com/300x200" 
-            alt="Blog Post 1" 
-            style={{ width: '100%', height: '200px', objectFit: 'cover', borderBottom: '5px solid #4f5b62' }} 
-          />
-          <div style={{ padding: '20px' }}>
-            <h3 style={{ fontSize: '1.8em', color: '#333', marginBottom: '10px' }}>The Power of React</h3>
-            <p style={{ fontSize: '1.1em', color: '#555', lineHeight: '1.6' }}>A deep dive into the features and benefits of React JS for modern web development.</p>
-            <button style={{
-              padding: '12px 25px', backgroundColor: '#1a202c', color: '#fff', border: 'none', borderRadius: '6px', 
-              cursor: 'pointer', fontSize: '1.1em', marginTop: '20px', transition: 'background-color 0.3s ease'
-            }}>Read More</button>
+      {/* Central Section */}
+      <section className="text-center py-16 px-6 lg:px-20">
+        <h2 className="text-3xl font-bold mb-4">Discover, Learn, and Grow</h2>
+        <p className="text-gray-600 text-lg font-light mb-12">
+          We bring you well-researched articles, tutorials, and resources to help you master the world of technology.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Feature 1 */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <img
+              src="https://via.placeholder.com/150"
+              alt="Feature 1"
+              className="mb-4 rounded-lg"
+            />
+            <h3 className="text-xl font-semibold mb-2">Modern Web Design</h3>
+            <p className="text-gray-600 text-base">
+              Learn the latest in web design and create stunning user interfaces.
+            </p>
+          </div>
+          {/* Feature 2 */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <img
+              src="https://via.placeholder.com/150"
+              alt="Feature 2"
+              className="mb-4 rounded-lg"
+            />
+            <h3 className="text-xl font-semibold mb-2">Programming Mastery</h3>
+            <p className="text-gray-600 text-base">
+              Enhance your coding skills with practical guides and examples.
+            </p>
+          </div>
+          {/* Feature 3 */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <img
+              src="https://via.placeholder.com/150"
+              alt="Feature 3"
+              className="mb-4 rounded-lg"
+            />
+            <h3 className="text-xl font-semibold mb-2">Tech Trends</h3>
+            <p className="text-gray-600 text-base">
+              Stay updated with the latest trends in the tech world.
+            </p>
           </div>
         </div>
-
-        {/* Blog Post 2 */}
-        <div style={{
-          width: '30%', backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-          overflow: 'hidden', transition: 'transform 0.3s ease-in-out', cursor: 'pointer'
-        }}>
-          <img 
-            src="https://via.placeholder.com/300x200" 
-            alt="Blog Post 2" 
-            style={{ width: '100%', height: '200px', objectFit: 'cover', borderBottom: '5px solid #4f5b62' }} 
-          />
-          <div style={{ padding: '20px' }}>
-            <h3 style={{ fontSize: '1.8em', color: '#333', marginBottom: '10px' }}>CSS Grid vs Flexbox</h3>
-            <p style={{ fontSize: '1.1em', color: '#555', lineHeight: '1.6' }}>Understanding when and why to use CSS Grid or Flexbox for layout design.</p>
-            <button style={{
-              padding: '12px 25px', backgroundColor: '#1a202c', color: '#fff', border: 'none', borderRadius: '6px', 
-              cursor: 'pointer', fontSize: '1.1em', marginTop: '20px', transition: 'background-color 0.3s ease'
-            }}>Read More</button>
-          </div>
-        </div>
-
-        {/* Blog Post 3 */}
-        <div style={{
-          width: '30%', backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-          overflow: 'hidden', transition: 'transform 0.3s ease-in-out', cursor: 'pointer'
-        }}>
-          <img 
-            src="https://via.placeholder.com/300x200" 
-            alt="Blog Post 3" 
-            style={{ width: '100%', height: '200px', objectFit: 'cover', borderBottom: '5px solid #4f5b62' }} 
-          />
-          <div style={{ padding: '20px' }}>
-            <h3 style={{ fontSize: '1.8em', color: '#333', marginBottom: '10px' }}>Mastering JavaScript Asynchronous Operations</h3>
-            <p style={{ fontSize: '1.1em', color: '#555', lineHeight: '1.6' }}>An introduction to handling async operations in JavaScript using Promises and async/await syntax.</p>
-            <button style={{
-              padding: '12px 25px', backgroundColor: '#1a202c', color: '#fff', border: 'none', borderRadius: '6px', 
-              cursor: 'pointer', fontSize: '1.1em', marginTop: '20px', transition: 'background-color 0.3s ease'
-            }}>Read More</button>
-          </div>
-        </div>
-      </main>
+      </section>
 
       {/* Footer Section */}
-      <footer style={{
-        backgroundColor: '#1a202c', color: '#fff', textAlign: 'center', padding: '30px 20px', marginTop: '60px', 
-        borderRadius: '8px', boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
-      }}>
-        <p style={{ fontSize: '1.1em', fontWeight: 'lighter' }}>© 2024 My Blog App. All Rights Reserved.</p>
+      <footer className="bg-gray-900 text-white py-6 text-center rounded-lg shadow-lg">
+        <p className="text-sm font-light">© 2024 My Blog App. All Rights Reserved.</p>
       </footer>
     </div>
   );

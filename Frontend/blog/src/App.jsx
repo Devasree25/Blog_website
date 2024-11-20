@@ -10,11 +10,11 @@ function App() {
   return (
     <div className="App">
       {/* Display the Login component */}
-      <Login/>
+      {/* <Login/> */}
       {/* Uncomment below to display Register component */}
       {/* <Register/> */}
       {/* Uncomment below to display LandingPage component */}
-      {/* <LandingPage/> */}
+      <LandingPage/>
     </div>
   );
 }
