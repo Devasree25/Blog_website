@@ -42,7 +42,7 @@ const LandingPage = () => {
           <p className="text-lg font-light mb-6">
             Explore the latest trends, guides, and insights in the world of technology. Dive into articles crafted for learners and professionals alike.
           </p>
-          <button className="py-3 px-6 bg-gray-100 text-gray-900 font-bold rounded-lg hover:bg-gray-200 transition duration-300">
+          <button className="py-3 px-7 bg-gray-100 text-gray-900 font-bold rounded-lg hover:bg-gray-200 transition duration-300">
             Get Started
           </button>
         </div>
