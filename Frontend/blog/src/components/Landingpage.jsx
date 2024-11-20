@@ -48,11 +48,7 @@ const LandingPage = () => {
         </div>
         {/* Right Section */}
         <div className="lg:w-1/2">
-          <img
-            src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Fpremium-photo%2Ffront-view-handsome-focused-young-man-reading-business-paper-book-sitting-desk-with-laptop-home-office_30452503.htm&psig=AOvVaw2m8nypKkNq7sFa47JjpmLp&ust=1732162705102000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCOikgIiH6okDFQAAAAAdAAAAABAE"
-            alt="Hero Section Image"
-            className="rounded-lg shadow-lg"
-          />
+          {/* Image removed from Hero Section */}
         </div>
       </header>
 
@@ -66,9 +62,9 @@ const LandingPage = () => {
           {/* Feature 1 */}
           <div className="bg-white rounded-lg shadow-lg p-6">
             <img
-              src="https://via.placeholder.com/150"
+              src="https://htmlburger.com/blog/wp-content/uploads/2023/04/modern-website-design-examples.jpg"
               alt="Feature 1"
-              className="mb-4 rounded-lg"
+              className="mb-4 rounded-lg w-full h-48 object-cover"
             />
             <h3 className="text-xl font-semibold mb-2">Modern Web Design</h3>
             <p className="text-gray-600 text-base">
@@ -78,9 +74,9 @@ const LandingPage = () => {
           {/* Feature 2 */}
           <div className="bg-white rounded-lg shadow-lg p-6">
             <img
-              src="https://via.placeholder.com/150"
+              src="https://strengthandconditioningeducation.com/wp-content/uploads/2022/03/Programming-Mastery-1.png"
               alt="Feature 2"
-              className="mb-4 rounded-lg"
+              className="mb-4 rounded-lg w-full h-48 object-cover"
             />
             <h3 className="text-xl font-semibold mb-2">Programming Mastery</h3>
             <p className="text-gray-600 text-base">
@@ -90,9 +86,9 @@ const LandingPage = () => {
           {/* Feature 3 */}
           <div className="bg-white rounded-lg shadow-lg p-6">
             <img
-              src="https://via.placeholder.com/150"
+              src="https://i0.wp.com/www.quytech.com/blog/wp-content/uploads/2023/11/Top-Technology-Trends-in-2024.webp?w=1437&ssl=1"
               alt="Feature 3"
-              className="mb-4 rounded-lg"
+              className="mb-4 rounded-lg w-full h-48 object-cover"
             />
             <h3 className="text-xl font-semibold mb-2">Tech Trends</h3>
             <p className="text-gray-600 text-base">
