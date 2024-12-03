@@ -72,7 +72,7 @@ const WriteBlog = ({ existingBlog }) => {
         <button
           type="submit"
           className={`px-6 py-2 text-white font-semibold rounded-lg ${
-            loading ? "bg-gray-500" : "bg-blue-500 hover:bg-blue-600"
+            loading ? "bg-gray-500" : isEditing ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"
           }`}
           disabled={loading}
         >
