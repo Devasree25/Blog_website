@@ -41,7 +41,9 @@ const WriteBlog = ({ existingBlog }) => {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-6">Write a New Blog</h1>
+      <h1 className="text-2xl font-bold mb-6">
+        {isEditing ? "Edit Blog" : "Write a New Blog"}
+      </h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700 font-semibold mb-2">
@@ -70,11 +72,11 @@ const WriteBlog = ({ existingBlog }) => {
         <button
           type="submit"
           className={`px-6 py-2 text-white font-semibold rounded-lg ${
-            loading ? "bg-gray-500" : "bg-blue-500 hover:bg-blue-600"
+            loading ? "bg-gray-500" : isEditing ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"
           }`}
           disabled={loading}
         >
-          {loading ? "Posting..." : "Post Blog"}
+          {loading ? (isEditing ? "Updating..." : "Posting...") : isEditing ? "Update Blog" : "Post Blog"}
         </button>
       </form>
     </div>
