@@ -90,28 +90,28 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-black text-white">
       {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-b from-blue-800 to-blue-600 text-white flex flex-col">
-        <div className="py-6 px-4 text-center border-b border-blue-700">
+      <aside className="w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col">
+        <div className="py-6 px-4 text-center border-b border-gray-700">
           <h1 className="text-3xl font-bold mb-2">📖 Blog Manager</h1>
           <p className="text-sm font-light">Your personal blog dashboard</p>
         </div>
         <nav className="mt-10 space-y-4 px-4">
-          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-blue-700 rounded-lg transition">
+          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
             <span>🏠</span> <span>Dashboard</span>
           </button>
-          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-blue-700 rounded-lg transition">
+          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
             <span>📝</span> <span>Manage Blogs</span>
           </button>
-          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-blue-700 rounded-lg transition">
+          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
             <span>⚙️</span> <span>Settings</span>
           </button>
-          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-blue-700 rounded-lg transition">
+          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
             <span>🚪</span> <span>Logout</span>
           </button>
         </nav>
-        <div className="mt-auto py-4 text-center text-sm text-blue-200 border-t border-blue-700">
+        <div className="mt-auto py-4 text-center text-sm text-gray-400 border-t border-gray-700">
           <p>© 2024 Blog Manager</p>
           <p>Crafted with 💙</p>
         </div>
@@ -121,24 +121,24 @@ const Dashboard = () => {
       <main className="flex-1 p-8">
         {!isAuthenticated ? (
           <div className="flex justify-center items-center h-full">
-            <h2 className="text-2xl font-semibold text-gray-800">Please log in to view the dashboard</h2>
+            <h2 className="text-2xl font-semibold">Please log in to view the dashboard</h2>
           </div>
         ) : editingBlog ? (
-          <div className="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Edit Blog</h2>
+          <div className="max-w-lg mx-auto bg-gray-800 p-8 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4">Edit Blog</h2>
             <input
               type="text"
               name="title"
               value={editData.title}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 mb-4 border border-gray-600 bg-gray-900 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Blog Title"
             />
             <textarea
               name="content"
               value={editData.content}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 mb-4 border border-gray-600 bg-gray-900 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Blog Content"
               rows="6"
             />
@@ -160,29 +160,29 @@ const Dashboard = () => {
         ) : (
           <>
             <header className="flex justify-between items-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-800">Welcome Back, {user?.displayName || "Admin"}!</h2>
+              <h2 className="text-3xl font-bold">Welcome Back, {user?.displayName || "Admin"}!</h2>
               <button className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Logout</button>
             </header>
             <section>
-              <h3 className="text-2xl font-semibold text-gray-800 mb-6">Recent Blogs</h3>
+              <h3 className="text-2xl font-semibold mb-6">Recent Blogs</h3>
               {loading ? (
-                <p className="text-gray-600">Loading blogs...</p>
+                <p>Loading blogs...</p>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {blogs.map((blog) => (
-                    <div key={blog.id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl">
-                      <h4 className="text-xl font-semibold text-gray-800 mb-2">{blog.title}</h4>
-                      <p className="text-gray-600 text-sm">{blog.content}</p>
+                    <div key={blog.id} className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl">
+                      <h4 className="text-xl font-semibold mb-2">{blog.title}</h4>
+                      <p className="text-gray-400 text-sm">{blog.content}</p>
                       <div className="flex justify-between mt-4">
                         <button
                           onClick={() => handleEditClick(blog)}
-                          className="text-blue-600 hover:underline"
+                          className="text-blue-400 hover:underline"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleDeleteClick(blog.id)}
-                          className="text-red-600 hover:underline"
+                          className="text-red-400 hover:underline"
                         >
                           Delete
                         </button>
