@@ -92,16 +92,29 @@ const Dashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-b from-blue-800 to-blue-900 text-white flex flex-col">
-        <div className="py-6 px-4 text-center">
-          <h1 className="text-3xl font-bold mb-2">Blog Manager</h1>
+      <aside className="w-64 bg-gradient-to-b from-blue-800 to-blue-600 text-white flex flex-col">
+        <div className="py-6 px-4 text-center border-b border-blue-700">
+          <h1 className="text-3xl font-bold mb-2">📖 Blog Manager</h1>
           <p className="text-sm font-light">Your personal blog dashboard</p>
         </div>
-        <nav className="mt-10 space-y-2">
-          <button className="w-full py-2 px-4 text-left hover:bg-blue-700 rounded-lg">Dashboard</button>
-          <button className="w-full py-2 px-4 text-left hover:bg-blue-700 rounded-lg">Manage Blogs</button>
-          <button className="w-full py-2 px-4 text-left hover:bg-blue-700 rounded-lg">Settings</button>
+        <nav className="mt-10 space-y-4 px-4">
+          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-blue-700 rounded-lg transition">
+            <span>🏠</span> <span>Dashboard</span>
+          </button>
+          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-blue-700 rounded-lg transition">
+            <span>📝</span> <span>Manage Blogs</span>
+          </button>
+          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-blue-700 rounded-lg transition">
+            <span>⚙️</span> <span>Settings</span>
+          </button>
+          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-blue-700 rounded-lg transition">
+            <span>🚪</span> <span>Logout</span>
+          </button>
         </nav>
+        <div className="mt-auto py-4 text-center text-sm text-blue-200 border-t border-blue-700">
+          <p>© 2024 Blog Manager</p>
+          <p>Crafted with 💙</p>
+        </div>
       </aside>
 
       {/* Main Content */}
