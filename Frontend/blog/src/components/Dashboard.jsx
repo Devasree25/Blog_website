@@ -69,7 +69,7 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="flex-1 p-6">
         <header className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Welcome Back, Admin!</h2>
+          <h2 className="text-3xl font-bold">Welcome Back, Admin!</h2>
         </header>
 
         {/* Recent Blogs */}
