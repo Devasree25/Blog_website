@@ -3,6 +3,7 @@ import { db } from "./../Firebase/Firebase";
 import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+
 const Dashboard = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,6 +14,7 @@ const Dashboard = () => {
 
   const auth = getAuth();
 
+  // dasnboard
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
