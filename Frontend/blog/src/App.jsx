@@ -5,6 +5,7 @@ import Login from './components/Login'; // Import the Login component
 import LandingPage from './components/Landingpage'; // Import the LandingPage component
 import Dashboard from './components/Dashboard';
 import WriteBlog from './components/BlogWriting';
+import ProfilePage from './components/ProfilePage';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -17,7 +18,9 @@ function App() {
       {/* <Register/> */}
       {/* Uncomment below to display LandingPage component */}
       {/* <LandingPage/> */}
-      <Dashboard/>
+      {/* <Dashboard/> */}
+      <ProfilePage/>
+      
       {/* <WriteBlog/> */}
     </div>
   );
