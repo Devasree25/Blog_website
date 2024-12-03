@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { db } from "./../Firebase/Firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 
-const WriteBlog = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+const WriteBlog = ({ existingBlog }) => {
+  const [title, setTitle] = useState(existingBlog?.title || "");
+  const [content, setContent] = useState(existingBlog?.content || "");
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(!!existingBlog);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,18 +18,22 @@ const WriteBlog = () => {
 
     try {
       setLoading(true);
-      const blogRef = collection(db, "blogs"); // Creates 'blogs' collection
-      await addDoc(blogRef, {
-        title,
-        content,
-        createdAt: new Date(),
-      });
-      alert("Blog posted successfully!");
+      if (isEditing) {
+        // Update the existing blog
+        const blogDoc = doc(db, "blogs", existingBlog.id);
+        await updateDoc(blogDoc, { title, content, updatedAt: new Date() });
+        alert("Blog updated successfully!");
+      } else {
+        // Create a new blog
+        const blogRef = collection(db, "blogs");
+        await addDoc(blogRef, { title, content, createdAt: new Date() });
+        alert("Blog posted successfully!");
+      }
       setTitle("");
       setContent("");
     } catch (error) {
-      console.error("Error adding blog:", error);
-      alert("Failed to post the blog. Please try again.");
+      console.error("Error saving blog:", error);
+      alert("Failed to save the blog. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -36,7 +41,9 @@ const WriteBlog = () => {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-6">Write a New Blog</h1>
+      <h1 className="text-2xl font-bold mb-6">
+        {isEditing ? "Edit Blog" : "Write a New Blog"}
+      </h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700 font-semibold mb-2">
@@ -69,7 +76,7 @@ const WriteBlog = () => {
           }`}
           disabled={loading}
         >
-          {loading ? "Posting..." : "Post Blog"}
+          {loading ? (isEditing ? "Updating..." : "Posting...") : isEditing ? "Update Blog" : "Post Blog"}
         </button>
       </form>
     </div>
