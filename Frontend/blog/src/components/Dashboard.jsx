@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db } from "./../Firebase/Firebase";
+import { db } from "./../Firebase/Firebase"; // Ensure Firebase is correctly initialized in this file
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 
 const Dashboard = () => {
@@ -44,14 +44,14 @@ const Dashboard = () => {
   // Save the edited blog
   const handleSaveClick = async () => {
     try {
-      const blogRef = doc(db, "blogs", editingBlog);
-      await updateDoc(blogRef, editData);
+      const blogRef = doc(db, "blogs", editingBlog); // Reference to the blog in Firestore
+      await updateDoc(blogRef, editData); // Update the blog in Firestore
       setBlogs((prevBlogs) =>
         prevBlogs.map((blog) =>
           blog.id === editingBlog ? { ...blog, ...editData } : blog
         )
       );
-      setEditingBlog(null);
+      setEditingBlog(null); // Exit editing mode
     } catch (error) {
       console.error("Error updating blog:", error);
     }
@@ -70,15 +70,9 @@ const Dashboard = () => {
           <h1 className="text-2xl font-bold">My Blog Dashboard</h1>
         </div>
         <nav className="flex flex-col mt-4">
-          <button className="text-white py-2 px-4 hover:bg-gray-700">
-            Dashboard
-          </button>
-          <button className="text-white py-2 px-4 hover:bg-gray-700">
-            Manage Blogs
-          </button>
-          <button className="text-white py-2 px-4 hover:bg-gray-700">
-            Settings
-          </button>
+          <button className="text-white py-2 px-4 hover:bg-gray-700">Dashboard</button>
+          <button className="text-white py-2 px-4 hover:bg-gray-700">Manage Blogs</button>
+          <button className="text-white py-2 px-4 hover:bg-gray-700">Settings</button>
         </nav>
       </aside>
 
@@ -129,13 +123,8 @@ const Dashboard = () => {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {blogs.map((blog) => (
-                    <div
-                      key={blog.id}
-                      className="bg-white p-4 rounded-lg shadow"
-                    >
-                      <h4 className="text-lg font-semibold mb-2">
-                        {blog.title}
-                      </h4>
+                    <div key={blog.id} className="bg-white p-4 rounded-lg shadow">
+                      <h4 className="text-lg font-semibold mb-2">{blog.title}</h4>
                       <p className="text-gray-600 text-sm">{blog.content}</p>
                       <button
                         onClick={() => handleEditClick(blog)}
