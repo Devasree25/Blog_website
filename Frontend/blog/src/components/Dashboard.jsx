@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "./../Firebase/Firebase";
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Dashboard = () => {
@@ -78,6 +78,17 @@ const Dashboard = () => {
     setEditingBlog(null);
   };
 
+  const handleDeleteClick = async (id) => {
+    try {
+      await deleteDoc(doc(db, "blogs", id));
+      setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
+      alert("Blog deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+      alert("Failed to delete the blog. Please try again.");
+    }
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -149,12 +160,20 @@ const Dashboard = () => {
                     <div key={blog.id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl">
                       <h4 className="text-xl font-semibold text-gray-800 mb-2">{blog.title}</h4>
                       <p className="text-gray-600 text-sm">{blog.content}</p>
-                      <button
-                        onClick={() => handleEditClick(blog)}
-                        className="mt-4 text-blue-600 hover:underline"
-                      >
-                        Edit
-                      </button>
+                      <div className="flex justify-between mt-4">
+                        <button
+                          onClick={() => handleEditClick(blog)}
+                          className="text-blue-600 hover:underline"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteClick(blog.id)}
+                          className="text-red-600 hover:underline"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
