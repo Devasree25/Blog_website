@@ -11,6 +11,7 @@ import ProfilePage from './components/ProfilePage';
 function App() {
   return (
     <Router>
+      
       <div className="App">
         <Routes>
           {/* Define routes */}
