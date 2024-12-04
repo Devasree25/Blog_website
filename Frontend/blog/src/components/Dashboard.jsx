@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { db } from "./../Firebase/Firebase";
 import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom"; // For navigation
+import classNames from "classnames"; // For conditionally applying classnames
 
 const Dashboard = () => {
   const [blogs, setBlogs] = useState([]);
@@ -11,10 +12,16 @@ const Dashboard = () => {
   const [editData, setEditData] = useState({ title: "", content: "" });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-
+  const [darkMode, setDarkMode] = useState(false); // Track dark mode state
   const auth = getAuth();
+  const navigate = useNavigate(); // Use this for navigation
 
-  // dasnboard
+  // Handle dark mode toggle
+  const toggleDarkMode = () => {
+    setDarkMode((prevMode) => !prevMode);
+  };
+
+  // Listen for auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -29,6 +36,7 @@ const Dashboard = () => {
     return () => unsubscribe();
   }, [auth]);
 
+  // Fetch blogs when authenticated
   useEffect(() => {
     if (isAuthenticated) {
       const fetchBlogs = async () => {
@@ -51,6 +59,7 @@ const Dashboard = () => {
     }
   }, [isAuthenticated]);
 
+  // Edit blog functionality
   const handleEditClick = (blog) => {
     setEditingBlog(blog.id);
     setEditData({ title: blog.title, content: blog.content });
@@ -80,6 +89,7 @@ const Dashboard = () => {
     setEditingBlog(null);
   };
 
+  // Delete blog functionality
   const handleDeleteClick = async (id) => {
     try {
       await deleteDoc(doc(db, "blogs", id));
@@ -91,25 +101,40 @@ const Dashboard = () => {
     }
   };
 
+  // Logout functionality
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/"); // Redirect to the landing page
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
+  // Navigate to Write Blog page
+  const handleWriteBlogClick = () => {
+    navigate("/write-blog"); // Navigate to Write Blog page
+  };
+
   return (
-    <div className="flex min-h-screen bg-black text-white">
+    <div className={classNames("flex min-h-screen", { "bg-black text-white": darkMode, "bg-white text-black": !darkMode })}>
       {/* Sidebar */}
       <aside className="w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col">
         <div className="py-6 px-4 text-center border-b border-gray-700">
-          <h1 className="text-3xl font-bold mb-2">📖 Blog Manager</h1>
+          <h1 className="text-3xl font-bold mb-2">My Blog app </h1>
           <p className="text-sm font-light">Your personal blog dashboard</p>
         </div>
         <nav className="mt-10 space-y-4 px-4">
-          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
-            <span>🏠</span> <span>Dashboard</span>
+          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition" onClick={toggleDarkMode}>
+            <span>🌙</span> <span>{darkMode ? "Light Mode" : "Dark Mode"}</span>
           </button>
-          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
-            <span>📝</span> <span>Manage Blogs</span>
+          <button onClick={handleWriteBlogClick} className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
+            <span>📝</span> <span>Write a Blog</span>
           </button>
           <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
             <span>⚙️</span> <span>Settings</span>
           </button>
-          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
+          <button onClick={handleLogout} className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
             <span>🚪</span> <span>Logout</span>
           </button>
         </nav>
@@ -163,7 +188,6 @@ const Dashboard = () => {
           <>
             <header className="flex justify-between items-center mb-8">
               <h2 className="text-3xl font-bold">Welcome Back, {user?.displayName || "Admin"}!</h2>
-              <button className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Logout</button>
             </header>
             <section>
               <h3 className="text-2xl font-semibold mb-6">Recent Blogs</h3>
@@ -178,13 +202,13 @@ const Dashboard = () => {
                       <div className="flex justify-between mt-4">
                         <button
                           onClick={() => handleEditClick(blog)}
-                          className="text-blue-400 hover:underline"
+                          className="text-yellow-500 hover:text-yellow-400"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleDeleteClick(blog.id)}
-                          className="text-red-400 hover:underline"
+                          className="text-red-500 hover:text-red-400"
                         >
                           Delete
                         </button>

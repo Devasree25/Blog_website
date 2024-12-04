@@ -30,6 +30,9 @@ const Register = () => {
       console.log('User saved to Firestore');
       setError(''); // Clear error on success
       alert('Registration successful!');
+
+      // Redirect to the dashboard after successful registration
+      navigate('/dashboard'); // Redirect to dashboard page
     } catch (err) {
       console.error('Error:', err);
       setError(err.message);
@@ -57,6 +60,9 @@ const Register = () => {
 
       console.log('Google user saved to Firestore');
       alert('Google Sign-In successful!');
+
+      // Redirect to the dashboard after successful Google sign-in
+      navigate('/dashboard'); // Redirect to dashboard page
     } catch (err) {
       console.error('Google Sign-In Error:', err);
       setError(err.message);

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../Firebase/Firebase'; // Ensure correct import path
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   // Email/Password Login
   const handleLogin = async (e) => {
@@ -14,6 +16,7 @@ export default function Login() {
       await signInWithEmailAndPassword(auth, email, password);
       setError('');
       alert('Login successful!');
+      navigate('/dashboard'); // Redirect to the dashboard after successful login
     } catch (err) {
       setError('Failed to log in: ' + err.message);
     }
@@ -28,6 +31,7 @@ export default function Login() {
       console.log('Google user signed in:', user);
       setError('');
       alert('Google Login successful!');
+      navigate('/dashboard'); // Redirect to the dashboard after successful Google login
     } catch (err) {
       setError('Google login failed: ' + err.message);
     }
@@ -37,7 +41,7 @@ export default function Login() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor:" #1a202c ",
+        backgroundColor: '#1a202c',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
