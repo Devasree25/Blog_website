@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
-import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../Firebase/Firebase';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
+      // Register the user
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
@@ -64,74 +63,90 @@ const Register = () => {
     }
   };
 
+  const handleRedirectToLogin = () => {
+    navigate('/login'); // Redirect to login page using navigate
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleRegister}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-96"
-      >
-        <h2 className="text-2xl font-bold mb-6">Register</h2>
+    <div style={{backgroundColor:" #1a202c "}} className="min-h-screen flex items-center justify-center">
+      <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-8">
+        <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-8">Create Account</h2>
 
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
 
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            required
-          />
+        <form onSubmit={handleRegister} className="space-y-1">
+          <div>
+            <label className="block text-gray-700 text-sm font-semibold" htmlFor="name">Full Name</label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 text-sm font-semibold" htmlFor="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 text-sm font-semibold" htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              required
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <button
+              type="submit"
+              className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              Register
+            </button>
+          </div>
+        </form>
+
+        <div className="flex items-center justify-center mt-6">
+          <p className="text-sm text-gray-600">Already have an account? 
+            <button
+              onClick={handleRedirectToLogin}
+              className="text-purple-600 hover:underline ml-2"
+            >
+              Login
+            </button>
+          </p>
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            required
-          />
+        <div className="flex items-center my-6">
+          <hr className="w-full border-gray-300" />
+          <span className="mx-4 text-gray-600">or</span>
+          <hr className="w-full border-gray-300" />
         </div>
 
-        <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            required
-          />
-        </div>
-
-        <div className="flex items-center justify-between">
+        <div className="flex justify-center">
           <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={handleGoogleSignIn}
+            className="w-full bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
           >
-            Register
+            Sign in with Google
           </button>
         </div>
-      </form>
-
-      <button
-        onClick={handleGoogleSignIn}
-        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      >
-        Sign in with Google
-      </button>
+      </div>
     </div>
   );
 };
