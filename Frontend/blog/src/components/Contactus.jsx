@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { db } from "./../Firebase/Firebase"; // Import Firebase
+import { collection, addDoc } from "firebase/firestore"; // Firestore functions
 
 const ContactUsPage = () => {
   const [formData, setFormData] = useState({
@@ -18,15 +20,31 @@ const ContactUsPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
-    // Handle form submission logic (e.g., send data to a backend or API)
-    setFormData({
-      name: "",
-      email: "",
-      message: "",
-    });
+
+    try {
+      // Save form data to Firebase Firestore
+      const docRef = await addDoc(collection(db, "contactMessages"), {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        timestamp: new Date(),
+      });
+
+      console.log("Document written with ID: ", docRef.id);
+
+      // Clear form after submission
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+
     setTimeout(() => setSubmitted(false), 3000); // Hide message after 3 seconds
   };
 
