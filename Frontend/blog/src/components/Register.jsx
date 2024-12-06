@@ -35,7 +35,16 @@ const Register = () => {
       navigate('/dashboard'); // Redirect to dashboard page
     } catch (err) {
       console.error('Error:', err);
-      setError(err.message);
+      // Set a custom error message based on the error code
+      if (err.code === 'auth/invalid-email') {
+        setError('The email address is badly formatted.');
+      } else if (err.code === 'auth/email-already-in-use') {
+        setError('This email address is already in use. Please use a different email.');
+      } else if (err.code === 'auth/weak-password') {
+        setError('The password is too weak. Please use a stronger password.');
+      } else {
+        setError('An error occurred. Please try again.');
+      }
     }
   };
 
@@ -65,7 +74,14 @@ const Register = () => {
       navigate('/dashboard'); // Redirect to dashboard page
     } catch (err) {
       console.error('Google Sign-In Error:', err);
-      setError(err.message);
+      // Set a custom error message based on the error code
+      if (err.code === 'auth/popup-closed-by-user') {
+        setError('Sign-In was closed. Please try again.');
+      } else if (err.code === 'auth/cancelled-popup-request') {
+        setError('Sign-In request was cancelled.');
+      } else {
+        setError('An error occurred during Google sign-in. Please try again.');
+      }
     }
   };
 
