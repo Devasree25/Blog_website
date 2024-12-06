@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const LandingPage = () => {
+  const navigate = useNavigate(); // Initialize navigate
+
   const styles = {
     container: {
       fontFamily: "Inter, sans-serif",
@@ -161,11 +164,14 @@ const LandingPage = () => {
             technology. Dive into articles crafted for learners and
             professionals alike.
           </p>
-          <button style={styles.heroButton}>Get Started</button>
+          <button
+            style={styles.heroButton}
+            onClick={() => navigate("/register")} // Navigate to the Register page
+          >
+            Get Started
+          </button>
         </div>
       </header>
-
-      {/* Central Section */}
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Discover, Learn, and Grow</h2>
         <p style={styles.sectionDescription}>
@@ -213,11 +219,10 @@ const LandingPage = () => {
         </div>
       </section>
 
+
       {/* Footer Section */}
       <footer style={styles.footer}>
-        <p style={styles.footerText}>
-          © 2024 My Blog App. All Rights Reserved.
-        </p>
+        <p style={styles.footerText}>© 2024 My Blog App. All Rights Reserved.</p>
       </footer>
     </div>
   );
