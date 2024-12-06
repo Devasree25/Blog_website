@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const LandingPage = () => {
   const navigate = useNavigate(); // Initialize navigate
+  
 
   const styles = {
     container: {
