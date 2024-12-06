@@ -135,7 +135,7 @@ export default function Login() {
             style={{
               width: '100%',
               padding: '0.75rem',
-              backgroundColor: '#FF7E5F',
+              backgroundColor: 'yellow',
               color: 'white',
               fontWeight: 'bold',
               border: 'none',
