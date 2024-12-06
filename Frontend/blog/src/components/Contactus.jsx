@@ -21,7 +21,7 @@ const ContactUsPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
-    // You can handle form submission here (e.g., send data to backend or an API)
+    // Handle form submission logic (e.g., send data to a backend or API)
     setFormData({
       name: "",
       email: "",
@@ -30,145 +30,74 @@ const ContactUsPage = () => {
     setTimeout(() => setSubmitted(false), 3000); // Hide message after 3 seconds
   };
 
-  const styles = {
-    container: {
-      fontFamily: "Inter, sans-serif",
-      backgroundColor: "#f7fafc",
-      padding: "40px",
-    },
-    navbar: {
-      backgroundColor: "#1a202c",
-      color: "#ffffff",
-      padding: "16px 32px",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    },
-    navTitle: {
-      fontSize: "24px",
-      fontWeight: "bold",
-      fontFamily: "Merriweather, serif",
-    },
-    formContainer: {
-      backgroundColor: "#ffffff",
-      padding: "32px",
-      borderRadius: "8px",
-      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-      marginTop: "40px",
-      width: "100%",
-      maxWidth: "600px",
-      marginLeft: "auto",
-      marginRight: "auto",
-    },
-    formTitle: {
-      fontSize: "28px",
-      fontWeight: "bold",
-      fontFamily: "Merriweather, serif",
-      textAlign: "center",
-      marginBottom: "16px",
-    },
-    inputField: {
-      width: "100%",
-      padding: "12px",
-      marginBottom: "16px",
-      borderRadius: "8px",
-      border: "1px solid #ddd",
-      fontSize: "16px",
-    },
-    textarea: {
-      width: "100%",
-      padding: "12px",
-      height: "150px",
-      borderRadius: "8px",
-      border: "1px solid #ddd",
-      fontSize: "16px",
-    },
-    button: {
-      padding: "12px 28px",
-      backgroundColor: "#3182ce",
-      color: "#ffffff",
-      fontWeight: "bold",
-      fontFamily: "Fira Code, monospace",
-      borderRadius: "8px",
-      cursor: "pointer",
-      border: "none",
-    },
-    successMessage: {
-      backgroundColor: "#38a169",
-      color: "#ffffff",
-      padding: "12px",
-      borderRadius: "8px",
-      marginTop: "20px",
-      textAlign: "center",
-    },
-    footer: {
-      backgroundColor: "#1a202c",
-      color: "#ffffff",
-      padding: "16px",
-      textAlign: "center",
-      borderRadius: "8px",
-      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-      marginTop: "40px",
-    },
-    footerText: {
-      fontSize: "14px",
-      fontWeight: "300",
-      fontFamily: "Fira Code, monospace",
-    },
-  };
-
   return (
-    <div style={styles.container}>
-      {/* Navbar */}
-      <nav style={styles.navbar}>
-        <h1 style={styles.navTitle}>My Blog App</h1>
-      </nav>
+    <div className="font-sans bg-gray-900 min-h-screen flex flex-col items-center justify-center p-6">
+      {/* Arrow Button for Landing Page */}
+      <div className="absolute top-6 left-6">
+        <button
+          onClick={() => navigate("/")} // Navigates to the home page
+          className="text-white text-3xl hover:text-indigo-600 transition duration-300"
+        >
+          &#8592; {/* Left Arrow symbol */}
+        </button>
+      </div>
 
       {/* Contact Form */}
-      <div style={styles.formContainer}>
-        <h2 style={styles.formTitle}>Contact Us</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Your Name"
-            value={formData.name}
-            onChange={handleChange}
-            style={styles.inputField}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Your Email"
-            value={formData.email}
-            onChange={handleChange}
-            style={styles.inputField}
-            required
-          />
-          <textarea
-            name="message"
-            placeholder="Your Message"
-            value={formData.message}
-            onChange={handleChange}
-            style={styles.textarea}
-            required
-          />
-          <button type="submit" style={styles.button}>
+      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg">
+        <h2 className="text-4xl font-bold text-center text-indigo-600 mb-6">
+          Get In Touch
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="flex flex-col">
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <textarea
+              name="message"
+              placeholder="Your Message"
+              value={formData.message}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transition duration-300"
+          >
             Submit
           </button>
         </form>
 
         {submitted && (
-          <div style={styles.successMessage}>Thank you for reaching out!</div>
+          <div className="mt-4 text-center text-green-500 font-medium">
+            Thank you for reaching out! We'll get back to you soon.
+          </div>
         )}
       </div>
-
-      {/* Footer Section */}
-      <footer style={styles.footer}>
-        <p style={styles.footerText}>© 2024 My Blog App. All Rights Reserved.</p>
-      </footer>
     </div>
   );
 };
