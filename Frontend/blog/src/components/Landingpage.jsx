@@ -1,266 +1,256 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+import { faFacebookF, faTwitter, faInstagram, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 const LandingPage = () => {
-  const navigate = useNavigate(); // Initialize navigate
-  
-
-  const styles = {
-    container: {
-      fontFamily: "Inter, sans-serif",
-      backgroundColor: "#f7fafc",
-    },
-    navbar: {
-      backgroundColor: "#1a202c",
-      color: "#ffffff",
-      padding: "16px 32px",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    },
-    navTitle: {
-      fontSize: "24px",
-      fontWeight: "bold",
-      fontFamily: "Merriweather, serif",
-    },
-    navLinks: {
-      display: "flex",
-      gap: "24px",
-      listStyle: "none",
-    },
-    navLink: {
-      color: "#ffffff",
-      textDecoration: "none",
-      fontFamily: "Fira Code, monospace",
-      cursor: "pointer",
-    },
-    hero: {
-      display: "flex",
-      flexDirection: "column-reverse",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: "40px 32px",
-      backgroundColor: "#1a202c",
-      color: "#ffffff",
-      borderRadius: "8px",
-      margin: "32px auto",
-      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    },
-    heroText: {
-      textAlign: "center",
-      marginBottom: "24px",
-    },
-    heroTitle: {
-      fontSize: "36px",
-      fontWeight: "bold",
-      fontFamily: "Merriweather, serif",
-      marginBottom: "16px",
-    },
-    heroDescription: {
-      fontSize: "18px",
-      fontWeight: "300",
-      marginBottom: "16px",
-    },
-    heroButton: {
-      padding: "12px 28px",
-      backgroundColor: "#edf2f7",
-      color: "#1a202c",
-      fontWeight: "bold",
-      fontFamily: "Fira Code, monospace",
-      borderRadius: "8px",
-      cursor: "pointer",
-      border: "none",
-    },
-    section: {
-      textAlign: "center",
-      padding: "64px 24px",
-    },
-    sectionTitle: {
-      fontSize: "28px",
-      fontWeight: "bold",
-      fontFamily: "Merriweather, serif",
-      marginBottom: "16px",
-    },
-    sectionDescription: {
-      fontSize: "18px",
-      fontWeight: "300",
-      color: "#4a5568",
-      marginBottom: "48px",
-    },
-    featureCard: {
-      backgroundColor: "#ffffff",
-      borderRadius: "8px",
-      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-      padding: "24px",
-      textAlign: "left",
-    },
-    featureImage: {
-      width: "100%",
-      height: "192px",
-      borderRadius: "8px",
-      objectFit: "cover",
-      marginBottom: "16px",
-    },
-    featureTitle: {
-      fontSize: "20px",
-      fontWeight: "600",
-      fontFamily: "Fira Code, monospace",
-      marginBottom: "8px",
-    },
-    featureDescription: {
-      fontSize: "16px",
-      color: "#4a5568",
-    },
-    footer: {
-      backgroundColor: "#1a202c",
-      color: "#ffffff",
-      padding: "32px 16px",
-      textAlign: "center",
-      borderRadius: "8px",
-      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-      marginTop: "32px",
-    },
-    footerText: {
-      fontSize: "14px",
-      fontWeight: "300",
-      fontFamily: "Fira Code, monospace",
-      marginBottom: "8px",
-    },
-    footerLinks: {
-      display: "flex",
-      justifyContent: "center",
-      gap: "24px",
-      listStyle: "none",
-      marginBottom: "16px",
-    },
-    footerLink: {
-      color: "#ffffff",
-      textDecoration: "none",
-      fontFamily: "Fira Code, monospace",
-      cursor: "pointer",
-    },
-    footerContact: {
-      fontSize: "16px",
-      fontWeight: "300",
-      marginBottom: "8px",
-    },
-  };
+  const navigate = useNavigate();
 
   return (
-    <div style={styles.container}>
+    <div className="font-sans bg-gray-100 min-h-screen">
       {/* Navbar */}
-      <nav style={styles.navbar}>
-        <h1 style={styles.navTitle}>My Blog App</h1>
-        <ul style={styles.navLinks}>
-          <li>
-            <a href="#" style={styles.navLink}>
-              Register
-            </a>
-          </li>
-          <li>
-            <a href="#" style={styles.navLink}>
-              About
-            </a>
-          </li>
-          <li>
-            <a href="#" style={styles.navLink}>
-              Blog
-            </a>
-          </li>
-          <li>
-            <a href="#" style={styles.navLink}>
-              Contact
-            </a>
-          </li>
-        </ul>
+      <nav className="bg-gray-900 text-white shadow-lg">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold tracking-wide">TechVerse Blog</h1>
+          <ul className="flex space-x-6">
+            <li>
+              <button
+                onClick={() => navigate("/blogs")}
+                className="hover:text-gray-300 transition"
+              >
+                Blogs
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => navigate("/about")}
+                className="hover:text-gray-300 transition"
+              >
+                About Us
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => navigate("/Contact")}
+                className="hover:text-gray-300 transition"
+              >
+                Contact us
+              </button>
+            </li>
+          </ul>
+        </div>
       </nav>
 
       {/* Hero Section */}
-      <header style={styles.hero}>
-        <div style={styles.heroText}>
-          <h1 style={styles.heroTitle}>Bold Ideas for Tech Enthusiasts</h1>
-          <p style={styles.heroDescription}>
-            Explore the latest trends, guides, and insights in the world of
-            technology. Dive into articles crafted for learners and
-            professionals alike.
+      <header
+        className="bg-cover bg-center text-white py-20 px-4 text-center"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1498050108023-c5249f4df085')`,
+        }}
+      >
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl font-bold mb-4">
+            Your Gateway to Tech Insights
+          </h1>
+          <p className="text-lg mb-6">
+            Discover in-depth articles, tutorials, and resources to fuel your
+            tech passion.
           </p>
           <button
-            style={styles.heroButton}
-            onClick={() => navigate("/register")} // Navigate to the Register page
+            onClick={() => navigate("/register")}
+            className="bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition"
           >
-            Get Started
+            Start Reading
           </button>
         </div>
       </header>
-      <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Discover, Learn, and Grow</h2>
-        <p style={styles.sectionDescription}>
-          We bring you well-researched articles, tutorials, and resources to
-          help you master the world of technology.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Feature 1 */}
-          <div style={styles.featureCard}>
-            <img
-              src="https://htmlburger.com/blog/wp-content/uploads/2023/04/modern-website-design-examples.jpg"
-              alt="Feature 1"
-              style={styles.featureImage}
-            />
-            <h3 style={styles.featureTitle}>Modern Web Design</h3>
-            <p style={styles.featureDescription}>
-              Learn the latest in web design and create stunning user
-              interfaces.
-            </p>
-          </div>
-          {/* Feature 2 */}
-          <div style={styles.featureCard}>
-            <img
-              src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZ3JhbW1pbmclMjBsYW5ndWFnZXxlbnwwfHwwfHx8MA%3D%3D"
-              alt="Feature 2"
-              style={styles.featureImage}
-            />
-            <h3 style={styles.featureTitle}>Programming Mastery</h3>
-            <p style={styles.featureDescription}>
-              Enhance your coding skills with practical guides and examples.
-            </p>
-          </div>
-          {/* Feature 3 */}
-          <div style={styles.featureCard}>
-            <img
-              src="https://i0.wp.com/www.quytech.com/blog/wp-content/uploads/2023/11/Top-Technology-Trends-in-2024.webp?w=1437&ssl=1"
-              alt="Feature 3"
-              style={styles.featureImage}
-            />
-            <h3 style={styles.featureTitle}>Tech Trends</h3>
-            <p style={styles.featureDescription}>
-              Stay updated with the latest trends in the tech world.
-            </p>
+
+      {/* Features Section */}
+      <section className="py-16 bg-gray-100">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-3xl font-bold mb-6">Why Choose TechVerse Blog?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white shadow-md rounded-lg p-6">
+              <img
+                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
+                alt="Expert Writers"
+                className="h-40 w-full object-cover rounded-md mb-4"
+              />
+              <h3 className="text-xl font-semibold mb-2">Expert Writers</h3>
+              <p className="text-gray-600">
+                Learn from industry experts sharing real-world experiences and
+                insights.
+              </p>
+            </div>
+            <div className="bg-white shadow-md rounded-lg p-6">
+  <img
+    src="https://images.unsplash.com/photo-1517430816045-df4b7de8f3f2"
+    alt="Diverse Topics"
+    className="h-40 w-full object-cover rounded-md mb-4"
+  />
+  <h3 className="text-xl font-semibold mb-2">Diverse Topics</h3>
+  <p className="text-gray-600">
+    Explore a wide range of tech-related subjects, from AI to programming.
+  </p>
+</div>
+            <div className="bg-white shadow-md rounded-lg p-6">
+              <img
+                src="https://images.unsplash.com/photo-1556761175-129418cb2dfe"
+                alt="Community Engagement"
+                className="h-40 w-full object-cover rounded-md mb-4"
+              />
+              <h3 className="text-xl font-semibold mb-2">Community Engagement</h3>
+              <p className="text-gray-600">
+                Connect with fellow tech enthusiasts and share your thoughts.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Footer Section */}
-      <footer style={styles.footer}>
-        <div>
-          <p style={styles.footerText}>© 2024 My Blog App. All Rights Reserved.</p>
-          <ul style={styles.footerLinks}>
-            <li>
-              <a href="mailto:contact@myblogapp.com" style={styles.footerLink}>
-                Email Us
+      {/* Popular Blogs Section */}
+      <section className="py-16 bg-gray-200">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-3xl font-bold mb-6">Popular Blogs</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-white shadow-md rounded-lg p-6">
+              <img
+                src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97"
+                alt="Understanding AI"
+                className="h-40 w-full object-cover rounded-md mb-4"
+              />
+              <h3 className="text-xl font-semibold mb-2">Understanding AI</h3>
+              <p className="text-gray-600">
+                An in-depth look at the basics and potential of artificial
+                intelligence.
+              </p>
+              <button
+                onClick={() => navigate("/blogs/ai-basics")}
+                className="text-blue-600 hover:underline mt-2"
+              >
+                Read More
+              </button>
+            </div>
+            <div className="bg-white shadow-md rounded-lg p-6">
+              <img
+                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085"
+                alt="Mastering JavaScript"
+                className="h-40 w-full object-cover rounded-md mb-4"
+              />
+              <h3 className="text-xl font-semibold mb-2">Mastering JavaScript</h3>
+              <p className="text-gray-600">
+                Tips and tricks for becoming a proficient JavaScript developer.
+              </p>
+              <button
+                onClick={() => navigate("/blogs/js-tips")}
+                className="text-blue-600 hover:underline mt-2"
+              >
+                Read More
+              </button>
+            </div>
+            <div className="bg-white shadow-md rounded-lg p-6">
+              <img
+                src="https://images.unsplash.com/photo-1505685296765-3a2736de412f"
+                alt="Web Development Trends"
+                className="h-40 w-full object-cover rounded-md mb-4"
+              />
+              <h3 className="text-xl font-semibold mb-2">Web Development Trends</h3>
+              <p className="text-gray-600">
+                Stay updated with the latest web development tools and
+                techniques.
+              </p>
+              <button
+                onClick={() => navigate("/blogs/web-trends")}
+                className="text-blue-600 hover:underline mt-2"
+              >
+                Read More
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-10">
+      <div className="container mx-auto px-6">
+        {/* Footer Top Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          {/* About Section */}
+          <div>
+            <h4 className="text-xl font-semibold mb-4">About TechVerse Blog</h4>
+            <p className="text-sm text-gray-400">
+              TechVerse Blog is your go-to source for tech insights, tutorials, and resources.
+              Join our community of passionate tech enthusiasts!
+            </p>
+          </div>
+
+          {/* Newsletter Section */}
+          <div>
+            <h4 className="text-xl font-semibold mb-4">Subscribe to Our Newsletter</h4>
+            <p className="text-sm text-gray-400 mb-4">
+              Stay updated with the latest articles and trends in the tech world.
+            </p>
+            <form className="flex flex-col space-y-3">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="px-4 py-2 rounded-lg text-gray-900 focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="bg-blue-600 hover:bg-blue-500 transition text-white px-4 py-2 rounded-lg font-semibold"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+
+          {/* Social Media Section */}
+          <div>
+            <h4 className="text-xl font-semibold mb-4">Follow Us</h4>
+            <div className="flex space-x-4">
+              <a
+                href="https://www.facebook.com"
+                className="hover:text-gray-300 transition"
+                aria-label="Facebook"
+              >
+                <FontAwesomeIcon icon={faFacebookF} className="text-xl" />
               </a>
-            </li>
-            <li>
-              <a href="tel:+1234567890" style={styles.footerLink}>
-                Call Us
+              <a
+                href="https://www.twitter.com"
+                className="hover:text-gray-300 transition"
+                aria-label="Twitter"
+              >
+                <FontAwesomeIcon icon={faTwitter} className="text-xl" />
               </a>
-            </li>
-          </ul>
-          <p style={styles.footerContact}>
-            For any inquiries, feel free to reach out to us!
+              <a
+                href="https://www.instagram.com"
+                className="hover:text-gray-300 transition"
+                aria-label="Instagram"
+              >
+                <FontAwesomeIcon icon={faInstagram} className="text-xl" />
+              </a>
+              <a
+                href="https://www.linkedin.com"
+                className="hover:text-gray-300 transition"
+                aria-label="LinkedIn"
+              >
+                <FontAwesomeIcon icon={faLinkedinIn} className="text-xl" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer Bottom Section */}
+        <div className="border-t border-gray-700 pt-6 text-center">
+          <p className="text-sm text-gray-400 mb-4">
+            © 2024 TechVerse Blog. All rights reserved.
           </p>
         </div>
-      </footer>
+      </div>
+    </footer>
+
     </div>
   );
 };
