@@ -9,7 +9,7 @@ const Dashboard = React.memo(() => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingBlog, setEditingBlog] = useState(null);
-  const [editData, setEditData] = useState({ title: "", content: "", imageUrl: "" });
+  const [editData, setEditData] = useState({ title: "", content: "" });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [selectedBlog, setSelectedBlog] = useState(null);
@@ -71,7 +71,7 @@ const Dashboard = React.memo(() => {
 
   const handleEditClick = useCallback((blog) => {
     setEditingBlog(blog.id);
-    setEditData({ title: blog.title, content: blog.content, imageUrl: blog.imageUrl });
+    setEditData({ title: blog.title, content: blog.content });
   }, []);
 
   const handleInputChange = useCallback((e) => {
@@ -129,19 +129,18 @@ const Dashboard = React.memo(() => {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {blogs.map((blog) => (
-          <div key={blog.id} className="bg-white p-6 rounded-lg shadow-md">
-            <div className="flex justify-between">
-              <h2 className="text-xl font-bold text-black">
-                {blog.title}
-              </h2>
-              <button
-                onClick={() => handleEditClick(blog)}
-                className="text-blue-500 hover:text-blue-700"
-              >
-                Edit
-              </button>
-            </div>
-            <p className="mt-2">{blog.content.substring(0, 100)}...</p>
+          <div key={blog.id} className="bg-white p-6 rounded-lg shadow-md relative">
+            <h2 className="text-xl font-bold text-gray-900">{blog.title}</h2>
+            <p className="mt-2 text-gray-700">{blog.content.substring(0, 100)}...</p>
+            
+            {/* Edit Button placed at the bottom-right corner */}
+            <button
+              onClick={() => handleEditClick(blog)}
+              className="absolute bottom-4 right-4 text-blue-500 hover:text-blue-700"
+            >
+              Edit
+            </button>
+
             <div className="flex justify-between mt-4">
               <button
                 onClick={() => setSelectedBlog(blog)}
@@ -149,39 +148,68 @@ const Dashboard = React.memo(() => {
               >
                 Read More
               </button>
-              <button
-                onClick={() => handleDeleteClick(blog.id)}
-                className="text-red-500 hover:text-red-700"
-              >
-                Delete
-              </button>
             </div>
           </div>
         ))}
       </div>
     );
-  }, [blogs, handleEditClick, handleDeleteClick]);
+  }, [blogs, handleEditClick]);
+
+  if (editingBlog) {
+    return (
+      <div className="flex min-h-screen bg-gray-900 text-white">
+        <main className="flex-1 p-8">
+          <button onClick={handleCancelClick} className="mb-4 text-blue-500">
+            Cancel
+          </button>
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
+            <h1 className="text-4xl font-bold mb-6 text-gray-900">Edit Blog</h1>
+            <input
+              type="text"
+              name="title"
+              value={editData.title}
+              onChange={handleInputChange}
+              className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+              placeholder="Title"
+            />
+            <textarea
+              name="content"
+              value={editData.content}
+              onChange={handleInputChange}
+              className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+              placeholder="Content"
+            />
+            <button
+              onClick={handleSaveClick}
+              className="w-full py-3 bg-blue-500 text-white rounded-lg"
+            >
+              Save Changes
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   if (selectedBlog) {
     return (
-      <div className="flex min-h-screen bg-white text-black">
+      <div className="flex min-h-screen bg-gray-900 text-white">
         <main className="flex-1 p-8">
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => setSelectedBlog(null)}
             className="mb-4 text-blue-500"
           >
             Back to Dashboard
           </button>
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
-            {selectedBlog.imageUrl && (
-              <img
-                src={selectedBlog.imageUrl}
-                alt={selectedBlog.title}
-                className="w-full h-64 object-cover rounded-lg mb-4"
-              />
-            )}
-            <h1 className="text-4xl font-bold mb-6">{selectedBlog.title}</h1>
+            <h1 className="text-4xl font-bold mb-6 text-gray-900">{selectedBlog.title}</h1>
             <p className="text-lg text-gray-800">{selectedBlog.content}</p>
+            <button
+              onClick={() => handleDeleteClick(selectedBlog.id)}
+              className="mt-4 py-2 px-4 bg-red-500 text-white rounded-lg"
+            >
+              Delete Blog
+            </button>
           </div>
         </main>
       </div>
@@ -189,7 +217,7 @@ const Dashboard = React.memo(() => {
   }
 
   return (
-    <div className="flex min-h-screen bg-white text-black">
+    <div className="flex min-h-screen bg-gray-900 text-white">
       <aside className="w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col">
         <div className="py-6 px-4 text-center border-b border-gray-700">
           <h1 className="text-3xl font-bold mb-2">TechVerse Blog</h1>
@@ -212,12 +240,19 @@ const Dashboard = React.memo(() => {
             <span>🚪</span> <span>Logout</span>
           </button>
         </nav>
-        <div className="mt-auto py-4 text-center text-sm text-gray-400 border-t border-gray-700">
-          <p>© 2024 TechVerse Blog</p>
-          <p>Crafted with 💙</p>
-        </div>
       </aside>
-      <main className="flex-1 p-8">{loading ? <p>Loading...</p> : renderedBlogs}</main>
+      <main className="flex-1 p-8">
+        <h1 className="text-4xl font-bold mb-8 text-gray-900">Welcome to your Dashboard</h1>
+        <div className="space-y-6">
+          {loading ? (
+            <p>Loading...</p>
+          ) : blogs.length === 0 ? (
+            <p>No blogs found.</p>
+          ) : (
+            renderedBlogs
+          )}
+        </div>
+      </main>
     </div>
   );
 });
