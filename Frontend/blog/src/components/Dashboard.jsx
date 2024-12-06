@@ -157,39 +157,47 @@ const Dashboard = React.memo(() => {
 
   if (editingBlog) {
     return (
-      <div className="flex min-h-screen bg-gray-900 text-white">
-        <main className="flex-1 p-8">
-          <button onClick={handleCancelClick} className="mb-4 text-blue-500">
-            Cancel
-          </button>
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold mb-6 text-gray-900">Edit Blog</h1>
+      <div className="fixed inset-0 bg-blue-900  bg-opacity-70 flex items-center justify-center z-50">
+        <div className="bg-white p-8 rounded-xl shadow-lg max-w-3xl w-full">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold text-gray-800">Edit Blog</h1>
+            <button
+              onClick={handleCancelClick}
+              className="text-lg text-blue-500 hover:text-blue-700"
+            >
+              Cancel
+            </button>
+          </div>
+          <div>
             <input
               type="text"
               name="title"
               value={editData.title}
               onChange={handleInputChange}
-              className="w-full p-2 border border-gray-300 rounded-lg mb-4"
-              placeholder="Title"
+              className="w-full p-4 mb-4 text-xl border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter Blog Title"
             />
             <textarea
               name="content"
               value={editData.content}
               onChange={handleInputChange}
-              className="w-full p-2 border border-gray-300 rounded-lg mb-4"
-              placeholder="Content"
+              className="w-full p-4 mb-6 text-lg border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Write your content here..."
+              rows="6"
             />
             <button
               onClick={handleSaveClick}
-              className="w-full py-3 bg-blue-500 text-white rounded-lg"
+              className="w-full py-3 bg-blue-500 text-white text-lg font-semibold rounded-xl shadow-md hover:bg-blue-600 focus:outline-none transition-all"
             >
               Save Changes
             </button>
           </div>
-        </main>
+        </div>
       </div>
     );
   }
+  
+  
 
   if (selectedBlog) {
     return (
