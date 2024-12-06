@@ -18,8 +18,8 @@ function App() {
       {/* <Register/> */}
       {/* Uncomment below to display LandingPage component */}
       {/* <LandingPage/> */}
-      {/* <Dashboard/> */}
-      <ProfilePage/>
+      <Dashboard/>
+      {/* <ProfilePage/> */}
       
       {/* <WriteBlog/> */}
     </div>
