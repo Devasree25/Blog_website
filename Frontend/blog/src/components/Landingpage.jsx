@@ -1,8 +1,8 @@
 import React from "react";
-import { useNavigate, Link } from "react-router-dom";  // Import Link
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const LandingPage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Initialize navigate
 
   const styles = {
     container: {
@@ -114,15 +114,35 @@ const LandingPage = () => {
     footer: {
       backgroundColor: "#1a202c",
       color: "#ffffff",
-      padding: "16px",
+      padding: "32px 16px",
       textAlign: "center",
       borderRadius: "8px",
       boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+      marginTop: "32px",
     },
     footerText: {
       fontSize: "14px",
       fontWeight: "300",
       fontFamily: "Fira Code, monospace",
+      marginBottom: "8px",
+    },
+    footerLinks: {
+      display: "flex",
+      justifyContent: "center",
+      gap: "24px",
+      listStyle: "none",
+      marginBottom: "16px",
+    },
+    footerLink: {
+      color: "#ffffff",
+      textDecoration: "none",
+      fontFamily: "Fira Code, monospace",
+      cursor: "pointer",
+    },
+    footerContact: {
+      fontSize: "16px",
+      fontWeight: "300",
+      marginBottom: "8px",
     },
   };
 
@@ -133,24 +153,24 @@ const LandingPage = () => {
         <h1 style={styles.navTitle}>My Blog App</h1>
         <ul style={styles.navLinks}>
           <li>
-            <Link to="/register" style={styles.navLink}>
+            <a href="#" style={styles.navLink}>
               Register
-            </Link>
+            </a>
           </li>
           <li>
-            <Link to="#" style={styles.navLink}>
+            <a href="#" style={styles.navLink}>
               About
-            </Link>
+            </a>
           </li>
           <li>
-            <Link to="#" style={styles.navLink}>
+            <a href="#" style={styles.navLink}>
               Blog
-            </Link>
+            </a>
           </li>
           <li>
-            <Link to="/contact" style={styles.navLink}> {/* Link to Contact Us */}
+            <a href="#" style={styles.navLink}>
               Contact
-            </Link>
+            </a>
           </li>
         </ul>
       </nav>
@@ -166,7 +186,7 @@ const LandingPage = () => {
           </p>
           <button
             style={styles.heroButton}
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/register")} // Navigate to the Register page
           >
             Get Started
           </button>
@@ -178,11 +198,67 @@ const LandingPage = () => {
           We bring you well-researched articles, tutorials, and resources to
           help you master the world of technology.
         </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Feature 1 */}
+          <div style={styles.featureCard}>
+            <img
+              src="https://htmlburger.com/blog/wp-content/uploads/2023/04/modern-website-design-examples.jpg"
+              alt="Feature 1"
+              style={styles.featureImage}
+            />
+            <h3 style={styles.featureTitle}>Modern Web Design</h3>
+            <p style={styles.featureDescription}>
+              Learn the latest in web design and create stunning user
+              interfaces.
+            </p>
+          </div>
+          {/* Feature 2 */}
+          <div style={styles.featureCard}>
+            <img
+              src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZ3JhbW1pbmclMjBsYW5ndWFnZXxlbnwwfHwwfHx8MA%3D%3D"
+              alt="Feature 2"
+              style={styles.featureImage}
+            />
+            <h3 style={styles.featureTitle}>Programming Mastery</h3>
+            <p style={styles.featureDescription}>
+              Enhance your coding skills with practical guides and examples.
+            </p>
+          </div>
+          {/* Feature 3 */}
+          <div style={styles.featureCard}>
+            <img
+              src="https://i0.wp.com/www.quytech.com/blog/wp-content/uploads/2023/11/Top-Technology-Trends-in-2024.webp?w=1437&ssl=1"
+              alt="Feature 3"
+              style={styles.featureImage}
+            />
+            <h3 style={styles.featureTitle}>Tech Trends</h3>
+            <p style={styles.featureDescription}>
+              Stay updated with the latest trends in the tech world.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Footer Section */}
       <footer style={styles.footer}>
-        <p style={styles.footerText}>© 2024 My Blog App. All Rights Reserved.</p>
+        <div>
+          <p style={styles.footerText}>© 2024 My Blog App. All Rights Reserved.</p>
+          <ul style={styles.footerLinks}>
+            <li>
+              <a href="mailto:contact@myblogapp.com" style={styles.footerLink}>
+                Email Us
+              </a>
+            </li>
+            <li>
+              <a href="tel:+1234567890" style={styles.footerLink}>
+                Call Us
+              </a>
+            </li>
+          </ul>
+          <p style={styles.footerContact}>
+            For any inquiries, feel free to reach out to us!
+          </p>
+        </div>
       </footer>
     </div>
   );
