@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { db } from "./../Firebase/Firebase";
 import { collection, getDocs, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate, useParams } from "react-router-dom";
 import classNames from "classnames";
 
-const Dashboard = () => {
+const Dashboard = React.memo(() => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingBlog, setEditingBlog] = useState(null);
@@ -18,9 +18,25 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { blogId } = useParams();
 
-  const toggleDarkMode = () => {
+  const toggleDarkMode = useCallback(() => {
     setDarkMode((prevMode) => !prevMode);
-  };
+  }, []);
+
+  const fetchBlogs = useCallback(async () => {
+    try {
+      const blogCollection = collection(db, "blogs");
+      const blogSnapshot = await getDocs(blogCollection);
+      const blogList = blogSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setBlogs(blogList);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -36,26 +52,8 @@ const Dashboard = () => {
   }, [auth]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      const fetchBlogs = async () => {
-        try {
-          const blogCollection = collection(db, "blogs");
-          const blogSnapshot = await getDocs(blogCollection);
-          const blogList = blogSnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-          setBlogs(blogList);
-        } catch (error) {
-          console.error("Error fetching blogs:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchBlogs();
-    }
-  }, [isAuthenticated]);
+    if (isAuthenticated) fetchBlogs();
+  }, [isAuthenticated, fetchBlogs]);
 
   useEffect(() => {
     if (blogId) {
@@ -76,17 +74,17 @@ const Dashboard = () => {
     }
   }, [blogId]);
 
-  const handleEditClick = (blog) => {
+  const handleEditClick = useCallback((blog) => {
     setEditingBlog(blog.id);
     setEditData({ title: blog.title, content: blog.content, imageUrl: blog.imageUrl });
-  };
+  }, []);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
     setEditData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  }, []);
 
-  const handleSaveClick = async () => {
+  const handleSaveClick = useCallback(async () => {
     try {
       const blogRef = doc(db, "blogs", editingBlog);
       await updateDoc(blogRef, editData);
@@ -99,37 +97,58 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error updating blog:", error);
     }
-  };
+  }, [editingBlog, editData]);
 
-  const handleCancelClick = () => {
+  const handleCancelClick = useCallback(() => {
     setEditingBlog(null);
-  };
+  }, []);
 
-  const handleDeleteClick = async (id) => {
-    try {
-      await deleteDoc(doc(db, "blogs", id));
-      setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
-      alert("Blog deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting blog:", error);
-      alert("Failed to delete the blog. Please try again.");
-    }
-  };
+  const handleDeleteClick = useCallback(
+    async (id) => {
+      try {
+        await deleteDoc(doc(db, "blogs", id));
+        setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
+        alert("Blog deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting blog:", error);
+        alert("Failed to delete the blog. Please try again.");
+      }
+    },
+    [setBlogs]
+  );
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     try {
       await signOut(auth);
       navigate("/");
     } catch (error) {
       console.error("Error logging out:", error);
     }
-  };
+  }, [auth, navigate]);
 
-  const handleWriteBlogClick = () => {
+  const handleWriteBlogClick = useCallback(() => {
     navigate("/write-blog");
-  };
- 
+  }, [navigate]);
 
+  const renderedBlogs = useMemo(() => {
+    return blogs.map((blog) => (
+      <div key={blog.id} className="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto mb-6">
+        <div className="flex justify-between">
+          <h2 className="text-2xl font-bold">{blog.title}</h2>
+          <button onClick={() => handleEditClick(blog)} className="text-blue-500 hover:text-blue-700">
+            Edit
+          </button>
+        </div>
+        <p className="mt-2">{blog.content.substring(0, 100)}...</p>
+        <div className="flex justify-between mt-4">
+          <button onClick={() => setSelectedBlog(blog)} className="text-blue-500 hover:text-blue-700">Read More</button>
+          <button onClick={() => handleDeleteClick(blog.id)} className="text-red-500 hover:text-red-700">
+            Delete
+          </button>
+        </div>
+      </div>
+    ));
+  }, [blogs, handleEditClick, handleDeleteClick]);
 
   if (selectedBlog) {
     return (
@@ -183,63 +202,36 @@ const Dashboard = () => {
         ) : editingBlog ? (
           <div className="max-w-lg mx-auto bg-gray-800 p-8 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-4">Edit Blog</h2>
-            <input
-              type="text"
-              name="title"
-              value={editData.title}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 mb-4 border border-gray-600 bg-gray-900 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Blog Title"
-            />
-            <textarea
-              name="content"
-              value={editData.content}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 mb-4 border border-gray-600 bg-gray-900 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Blog Content"
-              rows="6"
-            />
-            <input
-              type="text"
-              name="imageUrl"
-              value={editData.imageUrl}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 mb-4 border border-gray-600 bg-gray-900 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Image URL"
-            />
+            <div className="mb-4">
+              <label className="block mb-2">Title</label>
+              <input name="title" value={editData.title} onChange={handleInputChange} className="w-full border rounded-lg px-3 py-2" />
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2">Content</label>
+              <textarea name="content" value={editData.content} onChange={handleInputChange} className="w-full border rounded-lg px-3 py-2 h-32" />
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2">Image URL</label>
+              <input name="imageUrl" value={editData.imageUrl} onChange={handleInputChange} className="w-full border rounded-lg px-3 py-2" />
+            </div>
             <div className="flex justify-between">
-              <button onClick={handleSaveClick} className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Save</button>
-              <button onClick={handleCancelClick} className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">Cancel</button>
+              <button onClick={handleSaveClick} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">Save</button>
+              <button onClick={handleCancelClick} className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg">Cancel</button>
             </div>
           </div>
-        ) : loading ? (
-          <div className="flex justify-center items-center h-full">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
-          </div>
         ) : (
-          <div className="space-y-6">
-            {blogs.map((blog) => (
-              <div key={blog.id} className="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto mb-6">
-                <div className="flex justify-between">
-                  <h2 className="text-2xl font-bold">{blog.title}</h2>
-                  <button onClick={() => handleEditClick(blog)} className="text-blue-500 hover:text-blue-700">
-                    Edit
-                  </button>
-                </div>
-                <p className="mt-2">{blog.content.substring(0, 100)}...</p>
-                <div className="flex justify-between mt-4">
-                  <button onClick={() => setSelectedBlog(blog)} className="text-blue-500 hover:text-blue-700">Read More</button>
-                  <button onClick={() => handleDeleteClick(blog.id)} className="text-red-500 hover:text-red-700">
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          <>
+            <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
+            {loading ? (
+              <p className="text-lg text-center">Loading blogs...</p>
+            ) : (
+              <div className="grid gap-6">{renderedBlogs}</div>
+            )}
+          </>
         )}
       </main>
     </div>
   );
-};
+});
 
 export default Dashboard;
