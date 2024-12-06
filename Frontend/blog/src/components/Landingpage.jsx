@@ -1,8 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate, Link } from "react-router-dom";  // Import Link
 
 const LandingPage = () => {
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   const styles = {
     container: {
@@ -133,24 +133,24 @@ const LandingPage = () => {
         <h1 style={styles.navTitle}>My Blog App</h1>
         <ul style={styles.navLinks}>
           <li>
-            <a href="#" style={styles.navLink}>
+            <Link to="/register" style={styles.navLink}>
               Register
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" style={styles.navLink}>
+            <Link to="#" style={styles.navLink}>
               About
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" style={styles.navLink}>
+            <Link to="#" style={styles.navLink}>
               Blog
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" style={styles.navLink}>
+            <Link to="/contact" style={styles.navLink}> {/* Link to Contact Us */}
               Contact
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
@@ -166,7 +166,7 @@ const LandingPage = () => {
           </p>
           <button
             style={styles.heroButton}
-            onClick={() => navigate("/register")} // Navigate to the Register page
+            onClick={() => navigate("/register")}
           >
             Get Started
           </button>
@@ -178,47 +178,7 @@ const LandingPage = () => {
           We bring you well-researched articles, tutorials, and resources to
           help you master the world of technology.
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Feature 1 */}
-          <div style={styles.featureCard}>
-            <img
-              src="https://htmlburger.com/blog/wp-content/uploads/2023/04/modern-website-design-examples.jpg"
-              alt="Feature 1"
-              style={styles.featureImage}
-            />
-            <h3 style={styles.featureTitle}>Modern Web Design</h3>
-            <p style={styles.featureDescription}>
-              Learn the latest in web design and create stunning user
-              interfaces.
-            </p>
-          </div>
-          {/* Feature 2 */}
-          <div style={styles.featureCard}>
-            <img
-              src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZ3JhbW1pbmclMjBsYW5ndWFnZXxlbnwwfHwwfHx8MA%3D%3D"
-              alt="Feature 2"
-              style={styles.featureImage}
-            />
-            <h3 style={styles.featureTitle}>Programming Mastery</h3>
-            <p style={styles.featureDescription}>
-              Enhance your coding skills with practical guides and examples.
-            </p>
-          </div>
-          {/* Feature 3 */}
-          <div style={styles.featureCard}>
-            <img
-              src="https://i0.wp.com/www.quytech.com/blog/wp-content/uploads/2023/11/Top-Technology-Trends-in-2024.webp?w=1437&ssl=1"
-              alt="Feature 3"
-              style={styles.featureImage}
-            />
-            <h3 style={styles.featureTitle}>Tech Trends</h3>
-            <p style={styles.featureDescription}>
-              Stay updated with the latest trends in the tech world.
-            </p>
-          </div>
-        </div>
       </section>
-
 
       {/* Footer Section */}
       <footer style={styles.footer}>

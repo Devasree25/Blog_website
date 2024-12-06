@@ -7,6 +7,7 @@ import LandingPage from './components/LandingPage';
 import Dashboard from './components/Dashboard';
 import WriteBlog from './components/BlogWriting';
 import ProfilePage from './components/ProfilePage';
+import ContactUsPage from './components/Contactus';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/write-blog" element={<WriteBlog />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path='/Contact' element={<ContactUsPage/>}/>
         </Routes>
       </div>
     </Router>
