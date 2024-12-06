@@ -195,7 +195,7 @@ const LandingPage = () => {
           {/* Feature 2 */}
           <div style={styles.featureCard}>
             <img
-              src="https://strengthandconditioningeducation.com/wp-content/uploads/2022/03/Programming-Mastery-1.png"
+              src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZ3JhbW1pbmclMjBsYW5ndWFnZXxlbnwwfHwwfHx8MA%3D%3D"
               alt="Feature 2"
               style={styles.featureImage}
             />
