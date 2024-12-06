@@ -12,13 +12,25 @@ export default function Login() {
   // Email/Password Login
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError(''); // Clear previous error message before making the request
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      setError('');
       alert('Login successful!');
       navigate('/dashboard'); // Redirect to the dashboard after successful login
     } catch (err) {
-      setError('Failed to log in: ' + err.message);
+      // Handle specific Firebase error codes
+      let errorMessage = 'An error occurred during login.';
+      if (err.code === 'auth/user-not-found') {
+        errorMessage = 'No account found with this email.';
+      } else if (err.code === 'auth/wrong-password') {
+        errorMessage = 'Incorrect password. Please try again.';
+      } else if (err.code === 'auth/invalid-email') {
+        errorMessage = 'The email address is invalid.';
+      } else {
+        errorMessage = err.message; // Default error message
+      }
+      setError(errorMessage); // Display the error message
     }
   };
 
@@ -29,11 +41,18 @@ export default function Login() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       console.log('Google user signed in:', user);
-      setError('');
+      setError(''); // Clear any previous error
       alert('Google Login successful!');
       navigate('/dashboard'); // Redirect to the dashboard after successful Google login
     } catch (err) {
-      setError('Google login failed: ' + err.message);
+      // Handle Google-specific login errors
+      let errorMessage = 'An error occurred during Google login.';
+      if (err.code === 'auth/popup-closed-by-user') {
+        errorMessage = 'Popup was closed before completing the login process.';
+      } else {
+        errorMessage = err.message; // Default error message
+      }
+      setError(errorMessage); // Display the error message
     }
   };
 
@@ -70,7 +89,9 @@ export default function Login() {
         </h2>
 
         {error && (
-          <p style={{ color: 'red', textAlign: 'center', fontSize: '0.875rem' }}>{error}</p>
+          <p style={{ color: 'red', textAlign: 'center', fontSize: '0.875rem' }}>
+            {error}
+          </p>
         )}
 
         <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} onSubmit={handleLogin}>
