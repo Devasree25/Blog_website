@@ -1,40 +1,24 @@
 import React, { useState } from "react";
-import { db, storage } from "./../Firebase/Firebase"; // Ensure Firebase storage is initialized in your Firebase config
+import { db, auth } from "./../Firebase/Firebase";
 import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { onAuthStateChanged } from "firebase/auth";
 
 const WriteBlog = ({ existingBlog }) => {
   const [title, setTitle] = useState(existingBlog?.title || "");
   const [content, setContent] = useState(existingBlog?.content || "");
-  const [image, setImage] = useState(null); // For storing selected image file
-  const [imageUrl, setImageUrl] = useState(existingBlog?.imageUrl || ""); // For storing image URL
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(!!existingBlog);
+  const [userEmail, setUserEmail] = useState("");
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const storageRef = ref(storage, `blogImages/${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          // You can handle upload progress here if needed
-        },
-        (error) => {
-          console.error("Image upload error:", error);
-          alert("Failed to upload image.");
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setImageUrl(downloadURL); // Store the image URL once the upload is complete
-            setImage(file);
-          });
-        }
-      );
-    }
-  };
+  // Monitor the authentication state to get the user's email
+  React.useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserEmail(user.email);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,7 +35,6 @@ const WriteBlog = ({ existingBlog }) => {
         await updateDoc(blogDoc, {
           title,
           content,
-          imageUrl,
           updatedAt: new Date(),
         });
         alert("Blog updated successfully!");
@@ -60,15 +43,13 @@ const WriteBlog = ({ existingBlog }) => {
         await addDoc(blogRef, {
           title,
           content,
-          imageUrl,
+          createdBy: userEmail, // Save the creator's email
           createdAt: new Date(),
         });
         alert("Blog posted successfully!");
       }
       setTitle("");
       setContent("");
-      setImage(null);
-      setImageUrl("");
     } catch (error) {
       console.error("Error saving blog:", error);
       alert("Failed to save the blog. Please try again.");
@@ -78,14 +59,14 @@ const WriteBlog = ({ existingBlog }) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-8 bg-white shadow-lg rounded-lg">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">
+    <div className="max-w-3xl mx-auto mt-10 p-8 bg-gray-100 shadow-lg rounded-lg">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">
         {isEditing ? "Edit Blog" : "Write a New Blog"}
       </h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Blog Title */}
-        <div className="mb-6">
-          <label className="block text-gray-700 text-lg font-semibold mb-3">
+        <div>
+          <label className="block text-gray-700 text-lg font-semibold mb-2">
             Blog Title
           </label>
           <input
@@ -98,8 +79,8 @@ const WriteBlog = ({ existingBlog }) => {
         </div>
 
         {/* Blog Content */}
-        <div className="mb-6">
-          <label className="block text-gray-700 text-lg font-semibold mb-3">
+        <div>
+          <label className="block text-gray-700 text-lg font-semibold mb-2">
             Blog Content
           </label>
           <textarea
@@ -109,24 +90,6 @@ const WriteBlog = ({ existingBlog }) => {
             placeholder="Write your blog here"
             rows="8"
           ></textarea>
-        </div>
-
-        {/* Image Upload */}
-        <div className="mb-6">
-          <label className="block text-gray-700 text-lg font-semibold mb-3">
-            Upload Image (Optional)
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-          {imageUrl && (
-            <div className="mt-4">
-              <img src={imageUrl} alt="Uploaded" className="w-full h-auto rounded-lg" />
-            </div>
-          )}
         </div>
 
         {/* Submit Button */}

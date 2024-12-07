@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { db } from "./../Firebase/Firebase";
+import { db,auth } from "./../Firebase/Firebase";
 import { collection, getDocs, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import {signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate, useParams } from "react-router-dom";
 import classNames from "classnames";
 
@@ -13,25 +13,28 @@ const Dashboard = React.memo(() => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [selectedBlog, setSelectedBlog] = useState(null);
-  const auth = getAuth();
+ 
   const navigate = useNavigate();
   const { blogId } = useParams();
-
   const fetchBlogs = useCallback(async () => {
+    if (!user) return; // Ensure user is logged in before fetching blogs
     try {
       const blogCollection = collection(db, "blogs");
       const blogSnapshot = await getDocs(blogCollection);
-      const blogList = blogSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const blogList = blogSnapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .filter((blog) => blog.createdBy === user.email); // Filter by logged-in user
       setBlogs(blogList);
     } catch (error) {
       console.error("Error fetching blogs:", error);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
+  
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
