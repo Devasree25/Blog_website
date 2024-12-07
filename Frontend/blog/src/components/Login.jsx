@@ -164,8 +164,8 @@ export default function Login() {
               cursor: 'pointer',
               transition: 'background-color 0.2s',
             }}
-            onMouseOver={(e) => (e.target.style.backgroundColor = '#E06752')}
-            onMouseOut={(e) => (e.target.style.backgroundColor = '#FF7E5F')}
+            onMouseOver={(e) => (e.target.style.backgroundColor = '#FF7043')}
+            onMouseOut={(e) => (e.target.style.backgroundColor = '#FF7043')}
           >
             Log In
           </button>
