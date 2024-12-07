@@ -9,6 +9,7 @@ import WriteBlog from './components/BlogWriting';
 import ProfilePage from './components/ProfilePage';
 import ContactUsPage from './components/Contactus';
 import AboutUs from './components/Aboutus';
+import Blogs from './components/Blogs';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path='/Contact' element={<ContactUsPage/>}/>
           <Route path='/About' element={<AboutUs/>}/>
+          <Route path='/blogs' element={<Blogs/>}/>
         </Routes>
       </div>
     </Router>
