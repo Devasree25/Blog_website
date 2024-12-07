@@ -33,9 +33,9 @@ const Blogs = () => {
     setSelectedBlog(blog); // Set the selected blog
   };
 
-  // Handle "Back" to return to the blog list
+
   const handleBack = () => {
-    setSelectedBlog(null); // Reset the selected blog
+    setSelectedBlog(null); 
   };
 
   return (
@@ -44,7 +44,6 @@ const Blogs = () => {
         {loading ? (
           <p>Loading...</p>
         ) : selectedBlog ? (
-          // Detailed View
           <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
             <button
               onClick={handleBack}
