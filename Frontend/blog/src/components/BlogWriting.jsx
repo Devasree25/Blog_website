@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { db, auth } from "./../Firebase/Firebase";
 import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const WriteBlog = ({ existingBlog }) => {
   const [title, setTitle] = useState(existingBlog?.title || "");
@@ -9,6 +10,7 @@ const WriteBlog = ({ existingBlog }) => {
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(!!existingBlog);
   const [userEmail, setUserEmail] = useState("");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   // Monitor the authentication state to get the user's email
   React.useEffect(() => {
@@ -50,6 +52,7 @@ const WriteBlog = ({ existingBlog }) => {
       }
       setTitle("");
       setContent("");
+      navigate("/dashboard"); // Navigate back to the dashboard
     } catch (error) {
       console.error("Error saving blog:", error);
       alert("Failed to save the blog. Please try again.");
@@ -58,55 +61,75 @@ const WriteBlog = ({ existingBlog }) => {
     }
   };
 
+  const handleClose = () => {
+    navigate("/dashboard"); // Navigate back to the dashboard on close
+  };
+
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-8 bg-gray-100 shadow-lg rounded-lg">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">
-        {isEditing ? "Edit Blog" : "Write a New Blog"}
-      </h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Blog Title */}
-        <div>
-          <label className="block text-gray-700 text-lg font-semibold mb-2">
-            Blog Title
-          </label>
-          <input
-            type="text"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter blog title"
-          />
-        </div>
-
-        {/* Blog Content */}
-        <div>
-          <label className="block text-gray-700 text-lg font-semibold mb-2">
-            Blog Content
-          </label>
-          <textarea
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Write your blog here"
-            rows="8"
-          ></textarea>
-        </div>
-
-        {/* Submit Button */}
+    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+      <div className="relative bg-gray-900 text-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+        {/* Close Button */}
         <button
-          type="submit"
-          className={`w-full px-6 py-3 text-white font-semibold rounded-lg transition-transform transform ${
-            loading
-              ? "bg-gray-400 cursor-not-allowed"
-              : isEditing
-              ? "bg-green-500 hover:bg-green-600 active:scale-95"
-              : "bg-blue-500 hover:bg-blue-600 active:scale-95"
-          }`}
-          disabled={loading}
+          onClick={handleClose}
+          className="absolute top-4 right-4 text-white bg-gray-700 hover:bg-gray-800 rounded-full w-8 h-8 flex justify-center items-center"
         >
-          {loading ? (isEditing ? "Updating..." : "Posting...") : isEditing ? "Update Blog" : "Post Blog"}
+          &times;
         </button>
-      </form>
+
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          {isEditing ? "Edit Blog" : "Write a New Blog"}
+        </h1>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Blog Title */}
+          <div>
+            <label className="block text-gray-300 text-lg font-semibold mb-2">
+              Blog Title
+            </label>
+            <input
+              type="text"
+              className="w-full px-4 py-3 border border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-800 text-white"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter blog title"
+            />
+          </div>
+
+          {/* Blog Content */}
+          <div>
+            <label className="block text-gray-300 text-lg font-semibold mb-2">
+              Blog Content
+            </label>
+            <textarea
+              className="w-full px-4 py-3 border border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-800 text-white"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Write your blog here"
+              rows="8"
+            ></textarea>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className={`w-full px-6 py-3 text-white font-semibold rounded-lg transition-transform transform ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : isEditing
+                ? "bg-green-500 hover:bg-green-600 active:scale-95"
+                : "bg-blue-500 hover:bg-blue-600 active:scale-95"
+            }`}
+            disabled={loading}
+          >
+            {loading
+              ? isEditing
+                ? "Updating..."
+                : "Posting..."
+              : isEditing
+              ? "Update Blog"
+              : "Post Blog"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
