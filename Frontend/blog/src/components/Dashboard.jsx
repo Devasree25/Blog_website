@@ -127,6 +127,9 @@ const Dashboard = React.memo(() => {
   const handleWriteBlogClick = useCallback(() => {
     navigate("/write-blog");
   }, [navigate]);
+  const BlogClick = useCallback(() => {
+    navigate("/blogs");
+  }, [navigate]);
 
   const renderedBlogs = useMemo(() => {
     return (
@@ -241,8 +244,8 @@ const Dashboard = React.memo(() => {
           >
             <span>📝</span> <span>Write a Blog</span>
           </button>
-          <button className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
-            <span>⚙️</span> <span>Settings</span>
+          <button onClick={BlogClick} className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
+            <span>📔</span> <span>Blogs</span>
           </button>
           <button
             onClick={handleLogout}

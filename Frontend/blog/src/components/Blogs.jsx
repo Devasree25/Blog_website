@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // React Router for navigation
 import { db } from "./../Firebase/Firebase"; // Firebase configuration import
 import { collection, getDocs } from "firebase/firestore"; // Firestore methods
 
@@ -6,6 +7,8 @@ const Blogs = () => {
   const [blogs, setBlogs] = useState([]); // List of all blogs
   const [selectedBlog, setSelectedBlog] = useState(null); // Selected blog for details view
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate(); // Hook to navigate between routes
 
   // Fetch all blogs from Firebase
   const fetchBlogs = async () => {
@@ -30,10 +33,15 @@ const Blogs = () => {
 
   // Handle "Read More" to show blog details
   const handleReadMore = (blog) => {
-    setSelectedBlog(blog); // Set the selected blog
+    setSelectedBlog(blog); 
   };
 
+  // Navigate back to the dashboard
+  const handleBackToDashboard = () => {
+    navigate("/dashboard");
+  };
 
+  // Handle back from detailed blog view
   const handleBack = () => {
     setSelectedBlog(null); 
   };
@@ -41,6 +49,13 @@ const Blogs = () => {
   return (
     <div className="flex min-h-screen bg-gray-900 text-white">
       <main className="flex-1 p-8">
+        <button
+          onClick={handleBackToDashboard}
+          className="text-blue-500 hover:text-blue-700 mb-4"
+        >
+          &larr; Back to Dashboard
+        </button>
+
         {loading ? (
           <p>Loading...</p>
         ) : selectedBlog ? (
