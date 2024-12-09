@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { db,auth } from "./../Firebase/Firebase";
+import { db, auth } from "./../Firebase/Firebase";
 import { collection, getDocs, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
-import {signOut, onAuthStateChanged } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate, useParams } from "react-router-dom";
-import classNames from "classnames";
 
 const Dashboard = React.memo(() => {
   const [blogs, setBlogs] = useState([]);
@@ -13,11 +12,12 @@ const Dashboard = React.memo(() => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [selectedBlog, setSelectedBlog] = useState(null);
- 
+
   const navigate = useNavigate();
   const { blogId } = useParams();
+
   const fetchBlogs = useCallback(async () => {
-    if (!user) return; // Ensure user is logged in before fetching blogs
+    if (!user) return;
     try {
       const blogCollection = collection(db, "blogs");
       const blogSnapshot = await getDocs(blogCollection);
@@ -26,7 +26,7 @@ const Dashboard = React.memo(() => {
           id: doc.id,
           ...doc.data(),
         }))
-        .filter((blog) => blog.createdBy === user.email); // Filter by logged-in user
+        .filter((blog) => blog.createdBy === user.email);
       setBlogs(blogList);
     } catch (error) {
       console.error("Error fetching blogs:", error);
@@ -34,7 +34,6 @@ const Dashboard = React.memo(() => {
       setLoading(false);
     }
   }, [user]);
-  
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -47,7 +46,7 @@ const Dashboard = React.memo(() => {
       }
     });
     return () => unsubscribe();
-  }, [auth]);
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) fetchBlogs();
@@ -101,19 +100,16 @@ const Dashboard = React.memo(() => {
     setEditingBlog(null);
   }, []);
 
-  const handleDeleteClick = useCallback(
-    async (id) => {
-      try {
-        await deleteDoc(doc(db, "blogs", id));
-        setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
-        alert("Blog deleted successfully!");
-      } catch (error) {
-        console.error("Error deleting blog:", error);
-        alert("Failed to delete the blog. Please try again.");
-      }
-    },
-    [setBlogs]
-  );
+  const handleDeleteClick = useCallback(async (id) => {
+    try {
+      await deleteDoc(doc(db, "blogs", id));
+      setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
+      alert("Blog deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+      alert("Failed to delete the blog. Please try again.");
+    }
+  }, []);
 
   const handleLogout = useCallback(async () => {
     try {
@@ -122,35 +118,37 @@ const Dashboard = React.memo(() => {
     } catch (error) {
       console.error("Error logging out:", error);
     }
-  }, [auth, navigate]);
+  }, [navigate]);
 
   const handleWriteBlogClick = useCallback(() => {
     navigate("/write-blog");
   }, [navigate]);
+
   const BlogClick = useCallback(() => {
     navigate("/blogs");
+  }, [navigate]);
+
+  const handlesignup = useCallback(() => {
+    navigate("/register");
   }, [navigate]);
 
   const renderedBlogs = useMemo(() => {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {blogs.map((blog) => (
-          <div key={blog.id} className="bg-white p-6 rounded-lg shadow-md relative">
-            <h2 className="text-xl font-bold text-gray-900">{blog.title}</h2>
-            <p className="mt-2 text-gray-700">{blog.content.substring(0, 100)}...</p>
-            
-            {/* Edit Button placed at the bottom-right corner */}
-            <button
-              onClick={() => handleEditClick(blog)}
-              className="absolute bottom-4 right-4 text-blue-500 hover:text-blue-700"
-            >
-              Edit
-            </button>
-
-            <div className="flex justify-between mt-4">
+          <div key={blog.id} className="bg-gray-800 text-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-bold text-blue-400">{blog.title}</h2>
+            <p className="mt-2">{blog.content.substring(0, 100)}...</p>
+            <div className="flex justify-between items-center mt-4">
+              <button
+                onClick={() => handleEditClick(blog)}
+                className="text-blue-400 hover:text-blue-500"
+              >
+                Edit
+              </button>
               <button
                 onClick={() => setSelectedBlog(blog)}
-                className="text-blue-500 hover:text-blue-700"
+                className="text-blue-400 hover:text-blue-500"
               >
                 Read More
               </button>
@@ -163,37 +161,35 @@ const Dashboard = React.memo(() => {
 
   if (editingBlog) {
     return (
-      <div className="fixed inset-0 bg-blue-900  bg-opacity-70 flex items-center justify-center z-50">
-        <div className="bg-white p-8 rounded-xl shadow-lg max-w-3xl w-full">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-800">Edit Blog</h1>
+      <div className="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50">
+        <div className="bg-gray-800 text-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+          <h1 className="text-2xl font-bold mb-4 text-blue-400">Edit Blog</h1>
+          <input
+            type="text"
+            name="title"
+            value={editData.title}
+            onChange={handleInputChange}
+            className="w-full p-4 mb-4 bg-gray-700 text-blue-400 rounded-lg"
+            placeholder="Enter Blog Title"
+          />
+          <textarea
+            name="content"
+            value={editData.content}
+            onChange={handleInputChange}
+            className="w-full p-4 mb-4 bg-gray-700 text-blue-400 rounded-lg"
+            placeholder="Write your content here..."
+            rows="6"
+          />
+          <div className="flex justify-end gap-4">
             <button
               onClick={handleCancelClick}
-              className="text-lg text-blue-500 hover:text-blue-700"
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
             >
               Cancel
             </button>
-          </div>
-          <div>
-            <input
-              type="text"
-              name="title"
-              value={editData.title}
-              onChange={handleInputChange}
-              className="w-full p-4 mb-4 text-xl border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter Blog Title"
-            />
-            <textarea
-              name="content"
-              value={editData.content}
-              onChange={handleInputChange}
-              className="w-full p-4 mb-6 text-lg border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Write your content here..."
-              rows="6"
-            />
             <button
               onClick={handleSaveClick}
-              className="w-full py-3 bg-blue-500 text-white text-lg font-semibold rounded-xl shadow-md hover:bg-blue-600 focus:outline-none transition-all"
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
             >
               Save Changes
             </button>
@@ -202,8 +198,6 @@ const Dashboard = React.memo(() => {
       </div>
     );
   }
-  
-  
 
   if (selectedBlog) {
     return (
@@ -211,19 +205,13 @@ const Dashboard = React.memo(() => {
         <main className="flex-1 p-8">
           <button
             onClick={() => setSelectedBlog(null)}
-            className="mb-4 text-blue-500"
+            className="mb-4 text-blue-400"
           >
             Back to Dashboard
           </button>
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold mb-6 text-gray-900">{selectedBlog.title}</h1>
-            <p className="text-lg text-gray-800">{selectedBlog.content}</p>
-            <button
-              onClick={() => handleDeleteClick(selectedBlog.id)}
-              className="mt-4 py-2 px-4 bg-red-500 text-white rounded-lg"
-            >
-              Delete Blog
-            </button>
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+            <h1 className="text-3xl font-bold mb-6 text-blue-400">{selectedBlog.title}</h1>
+            <p>{selectedBlog.content}</p>
           </div>
         </main>
       </div>
@@ -232,40 +220,50 @@ const Dashboard = React.memo(() => {
 
   return (
     <div className="flex min-h-screen bg-gray-900 text-white">
-      <aside className="w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white flex flex-col">
+      <aside className="w-64 bg-gradient-to-b from-gray-900 to-gray-800">
         <div className="py-6 px-4 text-center border-b border-gray-700">
           <h1 className="text-3xl font-bold mb-2">TechVerse Blog</h1>
-          <p className="text-sm font-light">Your personal blog dashboard</p>
+          <p className="text-sm">Your personal blog dashboard</p>
         </div>
         <nav className="mt-10 space-y-4 px-4">
           <button
             onClick={handleWriteBlogClick}
-            className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition"
+            className="w-full flex items-center gap-3 py-3 px-4 hover:bg-gray-700 rounded-lg"
           >
-            <span>📝</span> <span>Write a Blog</span>
+            📝 Write a Blog
           </button>
-          <button onClick={BlogClick} className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition">
-            <span>📔</span> <span>Blogs</span>
+          <button
+            onClick={BlogClick}
+            className="w-full flex items-center gap-3 py-3 px-4 hover:bg-gray-700 rounded-lg"
+          >
+            📔 Blogs
+          </button>
+          <button
+            onClick={handlesignup}
+            className="w-full flex items-center gap-3 py-3 px-4 hover:bg-gray-700 rounded-lg"
+          >
+            🪧 Signup
           </button>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 py-3 px-4 text-left hover:bg-gray-700 rounded-lg transition"
+            className="w-full flex items-center gap-3 py-3 px-4 hover:bg-gray-700 rounded-lg"
           >
-            <span>🚪</span> <span>Logout</span>
+            🔑 Logout
           </button>
         </nav>
       </aside>
       <main className="flex-1 p-8">
-        <h1 className="text-4xl font-bold mb-8 text-gray-900">Welcome to your Dashboard</h1>
-        <div className="space-y-6">
-          {loading ? (
-            <p>Loading...</p>
-          ) : blogs.length === 0 ? (
-            <p>No blogs found.</p>
-          ) : (
-            renderedBlogs
-          )}
-        </div>
+        <h1 className="text-3xl font-bold text-blue-400">Dashboard</h1>
+        <p className="text-gray-400 mt-2 mb-6">
+          Welcome back, {user?.email}! Here are your blogs.
+        </p>
+        {loading ? (
+          <div className="text-center text-gray-400">Loading...</div>
+        ) : blogs.length > 0 ? (
+          renderedBlogs
+        ) : (
+          <p className="text-center text-gray-400">No blogs found. Write your first blog!</p>
+        )}
       </main>
     </div>
   );

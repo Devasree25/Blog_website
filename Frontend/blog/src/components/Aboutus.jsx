@@ -1,89 +1,111 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // React Router for navigation
+import { db } from "./../Firebase/Firebase"; // Firebase configuration import
+import { collection, getDocs } from "firebase/firestore"; // Firestore methods
 
-const AboutUs = () => {
-  const navigate = useNavigate();
+const Blogs = () => {
+  const [blogs, setBlogs] = useState([]); // List of all blogs
+  const [selectedBlog, setSelectedBlog] = useState(null); // Selected blog for details view
+  const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate(); // Hook to navigate between routes
+
+  // Fetch all blogs from Firebase
+  const fetchBlogs = async () => {
+    try {
+      const blogCollection = collection(db, "blogs");
+      const blogSnapshot = await getDocs(blogCollection);
+      const blogList = blogSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setBlogs(blogList);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  // Handle "Read More" to show blog details
+  const handleReadMore = (blog) => {
+    setSelectedBlog(blog); 
+  };
+
+  // Navigate back to the dashboard
+  const handleBackToDashboard = () => {
+    navigate("/dashboard");
+  };
+
+  // Close the modal popup
+  const closeModal = () => {
+    setSelectedBlog(null);
+  };
 
   return (
-    <div className="bg-gray-900 min-h-screen flex flex-col items-center justify-center py-12 px-6">
-      {/* Back to Landing Page Button */}
-      <div className="absolute top-6 left-6">
+    <div className="flex min-h-screen bg-gray-900 text-white">
+      <main className="flex-1 p-8 relative">
         <button
-          onClick={() => navigate("/")}
-          className="text-white text-3xl hover:text-green-500 transition duration-300"
+          onClick={handleBackToDashboard}
+          className="text-blue-500 hover:text-blue-700 mb-4"
         >
-          &#8592; {/* Left Arrow symbol */}
+          &larr; Back to Dashboard
         </button>
-      </div>
 
-      {/* Main Card */}
-      <div className="bg-gray-800 shadow-2xl rounded-xl max-w-5xl mx-auto p-10">
-        <h1 className="text-5xl font-extrabold text-center text-white mb-8">
-          About Us
-        </h1>
-
-        {/* Introduction Section */}
-        <div className="text-lg text-white mb-12">
-          <p className="mb-6 text-center">
-            Welcome to our blog! We're a vibrant community of creators, developers, and thinkers dedicated to bringing you top-notch insights, tools, and resources across various domains.
-          </p>
-          <p className="text-center">
-            Whether you're here to learn something new, stay updated, or get inspired, we're thrilled to have you with us.
-          </p>
-        </div>
-
-        {/* Our Team Section */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-semibold text-white text-center mb-6">
-            Meet Our Team
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Team Member 1 */}
-            <div className="bg-gray-700 p-6 rounded-lg shadow-lg text-center">
-              <div className="mb-4">
-                <img
-                  src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?crop=faces&fit=crop&w=100&h=100"
-                  alt="Emily White"
-                  className="rounded-full mx-auto"
-                />
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            <h1 className="text-3xl font-bold text-gray-100 mb-6">Blogs</h1>
+            {blogs.length === 0 ? (
+              <p className="text-lg text-gray-300">No blogs available</p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {blogs.map((blog) => (
+                  <div
+                    key={blog.id}
+                    className="bg-white p-6 rounded-lg shadow-lg relative"
+                  >
+                    <h2 className="text-xl font-bold text-gray-900">
+                      {blog.title}
+                    </h2>
+                    <p className="mt-2 text-gray-700">
+                      {blog.content.substring(0, 100)}...
+                    </p>
+                    <button
+                      onClick={() => handleReadMore(blog)}
+                      className="absolute bottom-4 right-4 text-blue-500 hover:text-blue-700"
+                    >
+                      Read More
+                    </button>
+                  </div>
+                ))}
               </div>
-              <h3 className="text-xl font-bold text-white">Emily White</h3>
-              <p className="text-sm text-gray-300">Lead Developer & Writer</p>
-              <p className="mt-2 text-gray-300">
-                Emily White loves coding and is on a mission to simplify complex tech concepts for everyone.
-              </p>
-            </div>
+            )}
+          </>
+        )}
 
-            {/* Team Member 2 */}
-            <div className="bg-gray-700 p-6 rounded-lg shadow-lg text-center">
-              <div className="mb-4">
-                <img
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?crop=faces&fit=crop&w=100&h=100"
-                  alt="Jane Smith"
-                  className="rounded-full mx-auto"
-                />
-              </div>
-              <h3 className="text-xl font-bold text-white">Jane Smith</h3>
-              <p className="text-sm text-gray-300">Content Strategist & Writer</p>
-              <p className="mt-2 text-gray-300">
-                Jane creates engaging, research-driven content that keeps you informed and inspired.
-              </p>
+        {selectedBlog && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-gray-900 text-white p-6 rounded-lg shadow-lg max-w-xl w-full relative">
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 text-white bg-gray-700 hover:bg-gray-800 rounded-full w-8 h-8 flex justify-center items-center"
+              >
+                &times;
+              </button>
+              <h1 className="text-4xl font-bold mb-4">{selectedBlog.title}</h1>
+              <p>{selectedBlog.content}</p>
             </div>
           </div>
-        </div>
-
-        {/* Vision Section */}
-        <div>
-          <h2 className="text-3xl font-semibold text-white text-center mb-6">
-            Our Vision
-          </h2>
-          <p className="text-lg text-white text-center">
-            We believe in the power of community and knowledge-sharing. Our mission is to create a platform where people can explore ideas, get inspired, and engage with content that matters.
-          </p>
-        </div>
-      </div>
+        )}
+      </main>
     </div>
   );
 };
 
-export default AboutUs;
+export default Blogs;
